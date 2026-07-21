@@ -92,7 +92,9 @@
   .sub-in{display:flex;flex-direction:column;gap:2px;background:rgba(255,255,255,.97);
     border:1px solid rgba(255,255,255,1);border-radius:16px;
     padding:12px 18px;box-shadow:var(--shadow);min-width:220px}
-  .sub-in a{white-space:nowrap;padding:6px 0}
+  .sub-in a{white-space:nowrap;padding:6px 0;transition:transform .16s ease,opacity .16s ease}
+  .sub-in a::after{display:none}
+  .sub-in a:hover{transform:translateX(3px)}
 
   section{padding:clamp(60px,8vw,110px) 0;position:relative}
   .sec-head{max-width:730px}

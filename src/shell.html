@@ -4,13 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Viktoria Langjahr – Startseite (Sanfte Verläufe)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--HEAD-ASSETS-->
 <style>
   :root{
     color-scheme:light;
-    --ink:#26454C; --ink-soft:#5E777D;
+    --ink:#26454C; --ink-soft:#52696F;
     --turq:#79BFC7; --lav:#B7A6D8; --rose:#ED9FBF; --sky:#A9DCE8;
     --cream:#F8F5F9; --glass:rgba(255,255,255,.58); --glass-strong:rgba(255,255,255,.75);
     --wing:linear-gradient(120deg,#79BFC7 0%,#A9DCE8 30%,#B7A6D8 62%,#ED9FBF 100%);
@@ -36,7 +34,7 @@
   @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(5vw,4vw) scale(1.12)}}
   @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-4vw,5vw) scale(1.1)}}
   @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4vw,-3vw) scale(1.14)}}
-  img{max-width:100%;display:block}
+  img{max-width:100%;height:auto;display:block}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   h1,h2,h3{font-family:var(--font-display);font-weight:400;line-height:1.13;letter-spacing:-.005em;
@@ -249,11 +247,11 @@
   footer.site::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--wing)}
   .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px}
   .foot .logo{height:54px;width:auto;margin-bottom:14px;display:block}
-  .foot h4{font-size:.74rem;text-transform:uppercase;letter-spacing:.15em;color:#a0c3c4;margin:0 0 14px}
+  .foot .foot-h{font-size:.74rem;text-transform:uppercase;letter-spacing:.15em;color:#a0c3c4;margin:0 0 14px}
   .foot a{display:block;color:#d9e7e7;opacity:.85;padding:5px 0;font-size:.95rem}
   .foot a:hover{opacity:1;color:#fff}
   .foot .socials{display:flex;gap:12px;margin-top:16px}
-  .foot .socials span{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.28);
+  .foot .socials a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.28);
     display:grid;place-items:center;font-size:.82rem}
   .foot-bottom{border-top:1px solid rgba(255,255,255,.16);margin-top:40px;padding-top:20px;display:flex;
     justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.82rem;color:#a7c5c6}
@@ -341,7 +339,7 @@
   .ccard.grad{background:var(--wing)}
   .ccard.grad::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.45),transparent 55%)}
   .ccard.grad>*{position:relative;z-index:1}
-  .ccard h3{font-size:1.3rem}
+  .ccard h2{font-size:1.3rem}
   .ccard p{font-size:.94rem;color:#33555c}
   .chan{display:flex;align-items:center;gap:13px;padding:10px 12px;margin:0 -12px;font-weight:600;
     border-radius:14px;transition:background .18s ease,transform .18s ease}
@@ -559,9 +557,27 @@
     </nav>
     <div class="nav-cta">
       <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch</a>
-      <a class="btn btn-glass" href="kontakt.html">Termin buchen</a>
+      <a class="btn btn-glass" href="https://viktoria-langjahr.de/onlinereservierung/">Termin buchen</a>
     </div>
-    <button class="burger" aria-label="Menü">☰</button>
+    <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <nav class="wrap mnav-in" aria-label="Mobiles Menü">
+      <p class="mnav-h">Coaching</p>
+      <a class="mnav-sub" href="coaching-kinder.html">Kinder &amp; Jugendliche</a>
+      <a class="mnav-sub" href="coaching-eltern.html">Eltern</a>
+      <a class="mnav-sub" href="coaching-paare.html">Paare</a>
+      <a class="mnav-sub" href="coaching-erwachsene.html">Erwachsene</a>
+      <a href="so-arbeite-ich.html">So arbeite ich</a>
+      <a href="kurse.html">Kurse &amp; Programme</a>
+      <a href="ueber-mich.html">Über mich</a>
+      <a href="kontakt.html">Kontakt</a>
+      <div class="mnav-cta">
+        <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch</a>
+        <a class="btn btn-glass" href="https://viktoria-langjahr.de/onlinereservierung/">Termin buchen</a>
+        <a class="btn btn-wa" href="https://wa.me/4915774277896?text=Hallo%20Viktoria%2C%20ich%20interessiere%20mich%20f%C3%BCr%20ein%20kostenloses%20Erstgespr%C3%A4ch." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3zm5 12.3c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1-1.4-1-2.7s.6-1.9.9-2.1c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.7 1.8.8 1.9c.1.1.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg> WhatsApp schreiben</a>
+      </div>
+    </nav>
   </div>
 </header>
 
@@ -580,7 +596,7 @@
             <span class="btn-note">Kostenfrei &amp; unverbindlich – wir lernen uns kennen und schauen, was zu dir passt.</span>
           </div>
           <div class="btn-col">
-            <a class="btn btn-glass" href="kontakt.html">Termin buchen <span class="arw">→</span></a>
+            <a class="btn btn-glass" href="https://viktoria-langjahr.de/onlinereservierung/">Termin buchen <span class="arw">→</span></a>
             <span class="btn-note">Für Klientinnen und Klienten, die mich bereits kennen.</span>
           </div>
         </div>
@@ -716,7 +732,7 @@
             <span class="btn-note">Kostenfrei · ca. 15 Minuten · telefonisch oder online</span>
           </div>
           <div class="btn-col">
-            <a class="btn btn-glass" href="kontakt.html">Termin buchen <span class="arw">→</span></a>
+            <a class="btn btn-glass" href="https://viktoria-langjahr.de/onlinereservierung/">Termin buchen <span class="arw">→</span></a>
             <span class="btn-note">Du kennst mich schon? Buche deinen Termin direkt.</span>
           </div>
         </div>
@@ -732,21 +748,23 @@
         <img class="logo" src="__IMG_e543bd7a__" alt="Viktoria Langjahr Coaching">
         <p style="color:#bcd6d6;font-size:.92rem;max-width:34ch">Psychoemotionale Begleitung für Kinder, Jugendliche und Erwachsene.</p>
         <div class="socials">
-          <span aria-label="Facebook"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8V11H7.7v3h2.4v7h3.4z"/></svg></span>
-          <span aria-label="Instagram"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"/></svg></span>
-          <span aria-label="YouTube"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M22 12c0-2.1-.2-3.6-.5-4.4-.3-.8-.9-1.3-1.7-1.5C18.4 5.7 12 5.7 12 5.7s-6.4 0-7.8.4c-.8.2-1.4.7-1.7 1.5C2.2 8.4 2 9.9 2 12s.2 3.6.5 4.4c.3.8.9 1.3 1.7 1.5 1.4.4 7.8.4 7.8.4s6.4 0 7.8-.4c.8-.2 1.4-.7 1.7-1.5.3-.8.5-2.3.5-4.4zM10 15.5v-7l6 3.5-6 3.5z"/></svg></span>
+          <a href="https://www.facebook.com/viktorialangjahrcoaching/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8V11H7.7v3h2.4v7h3.4z"/></svg></a>
+          <a href="https://www.instagram.com/viktorialangjahr/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
         </div>
       </div>
-      <div><h4>Navigation</h4>
+      <div><p class="foot-h">Navigation</p>
         <a href="coaching-kinder.html">Coaching</a><a href="so-arbeite-ich.html">So arbeite ich</a>
         <a href="kurse.html">Kurse &amp; Programme</a><a href="ueber-mich.html">Über mich</a><a href="kontakt.html">Kontakt</a></div>
-      <div><h4>Kontakt</h4>
+      <div><p class="foot-h">Kontakt</p>
         <a href="tel:+4915774277896">+49 1577 4277896</a>
-        <a href="kontakt.html">Kostenloses Erstgespräch</a><a href="kontakt.html">Termin buchen</a></div>
+        <a href="https://wa.me/4915774277896?text=Hallo%20Viktoria%2C%20ich%20interessiere%20mich%20f%C3%BCr%20ein%20kostenloses%20Erstgespr%C3%A4ch." target="_blank" rel="noopener">WhatsApp</a>
+        <a href="kontakt.html">Kostenloses Erstgespräch</a><a href="https://viktoria-langjahr.de/onlinereservierung/">Termin buchen</a></div>
     </div>
-    <div class="foot-bottom"><span>© 2026 Viktoria Langjahr</span><span>Impressum · Datenschutzerklärung</span></div>
+    <div class="foot-bottom"><span>© 2026 Viktoria Langjahr</span><span><a href="https://viktoria-langjahr.de/impressum/">Impressum</a> · <a href="https://viktoria-langjahr.de/datenschutzerklarung/">Datenschutzerklärung</a></span></div>
   </div>
 </footer>
+
+<a class="wa-float" href="https://wa.me/4915774277896?text=Hallo%20Viktoria%2C%20ich%20interessiere%20mich%20f%C3%BCr%20ein%20kostenloses%20Erstgespr%C3%A4ch." target="_blank" rel="noopener" aria-label="WhatsApp-Nachricht an Viktoria schreiben"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3zm5 12.3c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1-1.4-1-2.7s.6-1.9.9-2.1c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.7 1.8.8 1.9c.1.1.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg><span class="wa-label">WhatsApp</span></a>
 
 <script>
   (function(){
@@ -767,6 +785,19 @@
         b.replaceWith(f);
       });
     });
+    var burger=document.querySelector('.burger'), mnav=document.getElementById('mnav');
+    if(burger&&mnav){
+      var setOpen=function(o){
+        document.documentElement.classList.toggle('nav-open',o);
+        burger.setAttribute('aria-expanded',o?'true':'false');
+        burger.setAttribute('aria-label',o?'Menü schließen':'Menü öffnen');
+        mnav.hidden=!o;
+      };
+      burger.addEventListener('click',function(){setOpen(mnav.hidden)});
+      mnav.addEventListener('click',function(e){if(e.target.closest('a'))setOpen(false)});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mnav.hidden){setOpen(false);burger.focus()}});
+      matchMedia('(min-width:901px)').addEventListener('change',function(m){if(m.matches)setOpen(false)});
+    }
   })();
 </script>
 </body>

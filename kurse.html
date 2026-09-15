@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kurse & Programme – Viktoria Langjahr</title>
+<title>Kurse &amp; Programme – Viktoria Langjahr</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -602,6 +602,54 @@
 
   .method .hl-line{margin-top:auto}
 
+  /* audience jump links */
+  .aud-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .aud-link{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem;color:var(--ink);
+    background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.95);border-radius:999px;
+    padding:.55em 1.15em;box-shadow:var(--shadow-sm);transition:transform .18s ease,background .18s ease}
+  .aud-link:hover{transform:translateY(-2px);background:#fff}
+  .aud-link span{color:var(--lav)}
+  .anchor{scroll-margin-top:96px}
+  html{scroll-behavior:smooth}
+
+  /* shared offer typography */
+  .tkind{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#3E6E74}
+  .tprice{font-family:var(--font-display);font-size:2.3rem;line-height:1;color:var(--ink);white-space:nowrap}
+  .tq{font-family:var(--font-display);font-size:1.06rem;line-height:1.45;color:var(--ink)}
+  .ftitle{font-size:clamp(1.55rem,2.6vw,2rem);margin-top:6px}
+
+  /* pricing tiers */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:stretch}
+  .tier{position:relative;padding:30px 26px 26px;border-radius:26px;display:flex;flex-direction:column;gap:12px;
+    transition:transform .2s ease,box-shadow .2s ease}
+  .tier:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .tier h3{font-size:1.35rem}
+  .tier p:not(.tq){font-size:.93rem;color:var(--ink-soft)}
+  .tier .offer-meta{margin:2px 0 6px}
+  .tier .btn{margin-top:auto;align-self:flex-start}
+  .tier .btn-glass,.feature .btn-glass{background:#fff;border-color:#E7DEE8}
+  .tier.plus{border:2px solid transparent;
+    background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)) padding-box,var(--wing) border-box}
+  .tier .ttag{position:absolute;top:-13px;left:24px;font-size:.72rem;font-weight:600;color:#fff;
+    background:var(--wing-deep);border-radius:999px;padding:.38em .95em;box-shadow:var(--shadow-sm)}
+  @media (max-width:980px){.tiers{grid-template-columns:1fr;max-width:560px}}
+
+  /* featured program */
+  .feature{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(26px,4vw,50px);align-items:start;
+    padding:clamp(26px,4vw,50px);border-radius:32px;margin-top:38px}
+  .feature-main{display:flex;flex-direction:column;gap:12px}
+  .fprice{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:4px 0 6px}
+  .fprice .tprice{font-size:2.7rem}
+  .note-pill{display:inline-flex;font-size:.84rem;color:#3d565c;background:rgba(121,191,199,.14);
+    border:1px solid rgba(121,191,199,.4);border-radius:999px;padding:.4em 1em}
+  .incl-head{margin-top:18px;font-weight:600;color:var(--ink)}
+  .incl{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+  .feature-side{display:flex;flex-direction:column;gap:18px}
+  .feature-side .pull{margin:0}
+  @media (max-width:900px){.feature{grid-template-columns:1fr}.incl{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media (min-width:901px){.feature-side{position:sticky;top:110px}}
+
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -639,63 +687,122 @@
     <div class="wrap ph-grid">
       <div class="stack rev-up">
         <span class="eyebrow">Kurse &amp; Programme</span>
-        <h1>Wissen, das <span class="hl">Familien</span> stärkt.</h1>
-        <p class="lead">Kurse für Eltern, ein Transformationsprogramm für Frauen und eine Ausbildung für alle, die Familien professionell begleiten möchten.</p>
-        
-        <div class="btns">
-          <div class="btn-col">
-            <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch vereinbaren</a>
-            <span class="btn-note">Kostenfrei &amp; unverbindlich – wir lernen uns kennen.</span>
-          </div>
+        <h1>Meine <span class="hl">Angebote</span></h1>
+        <p class="lead">Ob du als Elternteil konkrete Unterstützung suchst, selbst etwas verändern möchtest oder dein Fachwissen erweitern willst – ich biete unterschiedliche Möglichkeiten der psychoemotionalen Begleitung und Weiterbildung.</p>
+        <div class="aud-links">
+          <a class="aud-link" href="#eltern">Für Eltern <span aria-hidden="true">↓</span></a>
+          <a class="aud-link" href="#fuer-dich">Für dich selbst <span aria-hidden="true">↓</span></a>
+          <a class="aud-link" href="#akademie">Für Fachkräfte <span aria-hidden="true">↓</span></a>
         </div>
       </div>
-      <div class="rev-up ph-media"><div class="ph-img"><img src="assets/img_b631b3c5.jpg" alt="Kurse und Programme"></div></div>
+      <div class="rev-up ph-media"><div class="ph-img"><img src="assets/img_b631b3c5.jpg" alt="Viktoria Langjahr"></div></div>
     </div>
   </section>
 
-  <section>
+  <section id="eltern" class="anchor">
     <div class="wrap">
       <div class="sec-head rev-up">
-        <span class="eyebrow">Angebote</span>
-        <h2>Drei Wege, mit mir zu arbeiten.</h2>
+        <span class="eyebrow">Für Eltern</span>
+        <h2>Wenn du als Elternteil konkrete Unterstützung suchst.</h2>
       </div>
-      <div class="who-list offers">
-        <a class="who glasswrap c-turq rev-up" href="kontakt.html">
-          <span class="who-img"><img src="assets/img_3a4003a7.jpg" alt=""></span>
-          <span class="who-txt">
-            <h3>Elternkurse</h3>
-            <div class="offer-meta"><span>Online</span><span>Deutsch</span><span>Termine auf Anfrage</span></div>
-            <p><b>„Wenn ein Kind krank ist“</b> – für Eltern, die ihr Kind in einer Krankheitsphase beruhigen und unterstützen möchten. Du erfährst, wie dein eigener Zustand den Heilungsprozess beeinflusst – und viel über die Psyche des Kindes und psychosomatische Zusammenhänge.</p>
-            <p><b>„Achtsame Eltern“</b> (Online-Seminar) – wie du bewusst eine gute, stabile Beziehung zu allen Familienmitgliedern aufbaust, bevor Probleme entstehen. Du lernst zu verstehen, was dein Kind mit seinem Verhalten sagen will – und wie du darauf reagieren kannst.</p>
-            <span class="go">Anfrage senden <span class="arw">→</span></span>
-          </span>
-        </a>
-        <a class="who glasswrap c-lav rev-up" href="kontakt.html">
-          <span class="who-img"><img src="assets/img_ae7af469.jpg" alt=""></span>
-          <span class="who-txt">
-            <h3>Programm „Meine Erfolgsgeschichte“</h3>
-            <div class="offer-meta"><span>6 Wochen</span><span>2 Std./Woche</span><span>Persönliche Begleitung</span></div>
-            <p>Vielleicht fühlst du dich erschöpft, dein Alltag ist eine Wiederholung von gestern, und du weißt nicht mehr, wann du dich das letzte Mal voller Kraft und Glück gefühlt hast. Dann ist es Zeit, das Leben deiner Träume aufzubauen – und alles beginnt mit dir.</p>
-            <p>In 6 Wochen löst du deine Blockaden, findest den Weg zu deinem Gefühl, baust harmonische Beziehungen auf und spürst dich selbst und deine Weiblichkeit wieder.</p>
-            <span class="variants">
-              <span class="variant"><span>6 Wochen Transformation · 2 Std./Woche + Begleitung</span><span class="price">3.600&nbsp;€</span></span>
-              <span class="variant"><span>Innere &amp; äußere Transformation – zusätzlich mit Begleitung durch Schönheitsexperten &amp; Stylisten</span><span class="price">4.300&nbsp;€</span></span>
-            </span>
-            <span class="go">Anfrage senden <span class="arw">→</span></span>
-          </span>
-        </a>
-        <a class="who glasswrap c-rose rev-up" href="kontakt.html">
-          <span class="who-img"><img src="assets/img_ad069d68.jpg" alt=""></span>
-          <span class="who-txt">
-            <h3>Ausbildung „Berater für Familien mit einem kranken Kind“</h3>
-            <div class="offer-meta"><span>Für Betroffene &amp; Fachkräfte</span><span>Deutsch</span></div>
-            <p>Wenn du selbst erlebt hast, wie es ist, wenn das eigene Kind krank ist – und dir damals eine erfahrene Begleitung gefehlt hat – kannst du jetzt selbst zu dieser Unterstützung für andere Familien werden.</p>
-            <p>Auch für Menschen aus sozialen, medizinischen und ähnlichen Berufen: Du erfährst, was alle Familienmitglieder auf emotionaler Ebene durchmachen und wie Eltern ihr Kind auf dem Weg zur Genesung unterstützen können.</p>
-            <span class="go">Anfrage senden <span class="arw">→</span></span>
-          </span>
-        </a>
+      <div class="tiers">
+        <div class="tier glasswrap rev-up">
+          <span class="tkind">Minikurs</span>
+          <h3>Gelassen durch Kindersorgen</h3>
+          <div class="tprice">9,90&nbsp;€</div>
+          <p class="tq">Du machst dir Sorgen um dein Kind und findest schwer aus dem Gedankenkarussell heraus?</p>
+          <p>Dieser Minikurs hilft dir, deine Sorgen besser zu verstehen, innere Sicherheit zu gewinnen und gelassener mit ihnen umzugehen.</p>
+          <div class="offer-meta"><span>Online</span><span>Flexibel in deinem eigenen Tempo</span></div>
+          <a class="btn btn-glass" href="kontakt.html">Minikurs starten <span class="arw">→</span></a>
+        </div>
+        <div class="tier glasswrap rev-up">
+          <span class="tkind">4-Wochen-Intensivkurs</span>
+          <h3>SOS-Elternkurs</h3>
+          <div class="tprice">299&nbsp;€</div>
+          <p class="tq">Wenn dein Kind dich immer wieder an deine Grenzen bringt und du nicht weißt, wie du richtig reagieren sollst.</p>
+          <p>In diesem 4-Wochen-Intensivkurs lernst du, das Verhalten deines Kindes emotional zu verstehen und in schwierigen Situationen sicher, klar und wirksam zu reagieren.</p>
+          <div class="offer-meta"><span>4 Wochen</span><span>8 Lerneinheiten</span><span>Online</span></div>
+          <a class="btn btn-glass" href="kontakt.html">SOS-Elternkurs starten <span class="arw">→</span></a>
+        </div>
+        <div class="tier plus glasswrap rev-up">
+          <span class="ttag">Mit persönlicher Begleitung</span>
+          <span class="tkind">Kurs + Messenger-Begleitung</span>
+          <h3>SOS-Elternkurs PLUS</h3>
+          <div class="tprice">380&nbsp;€</div>
+          <p class="tq">Du möchtest das Gelernte direkt auf eure persönlichen Situationen übertragen?</p>
+          <p>Neben dem kompletten SOS-Elternkurs erhältst du persönliche Begleitung über Messenger. Du kannst Fragen stellen, Situationen schildern und individuelle Rückmeldungen von mir bekommen.</p>
+          <div class="offer-meta"><span>4 Wochen</span><span>8 Lerneinheiten</span><span>Messenger-Begleitung</span></div>
+          <a class="btn btn-glass" href="kontakt.html">SOS-Elternkurs PLUS buchen <span class="arw">→</span></a>
+        </div>
       </div>
-      <div class="hinweis rev-up">Alle Kurse und Programme finden derzeit auf <b>Deutsch</b> statt. Termine und Details besprechen wir gern persönlich – schreib mir einfach.</div>
+    </div>
+  </section>
+
+  <section id="fuer-dich" class="anchor">
+    <div class="wrap">
+      <div class="sec-head rev-up">
+        <span class="eyebrow">Für dich selbst</span>
+        <h2>Wenn du selbst etwas verändern möchtest.</h2>
+      </div>
+      <div class="feature glasswrap rev-up">
+        <div class="feature-main">
+          <span class="tkind">6 Monate persönliche 1:1-Begleitung</span>
+          <h3 class="ftitle">Meine Erfolgsgeschichte</h3>
+          <div class="fprice"><span class="tprice">3.800&nbsp;€</span><span class="note-pill">Ratenzahlung nach Absprache möglich</span></div>
+          <p class="tq">Du hast schon vieles ausprobiert und trotzdem verändert sich nicht das, was du dir wünschst? Dann ist dieses Programm für dich.</p>
+          <p class="muted">Über 6 Monate begleite ich dich persönlich und individuell bei den Themen, die dich wirklich belasten oder dich bisher zurückhalten. Dabei kann es zum Beispiel gehen um:</p>
+          <div class="soft-chips">
+            <span class="soft-chip">Ängste</span><span class="soft-chip">Selbstzweifel</span>
+            <span class="soft-chip">emotionale Blockaden</span><span class="soft-chip">belastende Erfahrungen</span>
+            <span class="soft-chip">Beziehungsmuster</span><span class="soft-chip">psychosomatische Beschwerden</span>
+          </div>
+          <p class="muted" style="margin-top:18px">Wir arbeiten nicht nach einem starren Konzept. Wir schauen, was du gerade brauchst, und arbeiten gezielt an deinem emotionalen Erleben und den dahinterliegenden Ursachen.</p>
+          <p class="incl-head">Das beinhaltet:</p>
+          <div class="incl">
+            <div class="check">6 Monate persönliche Begleitung</div>
+            <div class="check">9 individuelle 1:1-Termine</div>
+            <div class="check">Termine alle 3 Wochen</div>
+            <div class="check">Individuell abgestimmte Methoden und Techniken</div>
+            <div class="check">Begleitung bei emotionalen und psychosomatischen Themen</div>
+            <div class="check">Nachhaltige Veränderung statt kurzfristiger Motivation</div>
+          </div>
+          <div class="btns" style="margin-top:28px">
+            <a class="btn btn-primary" href="kontakt.html">Persönliche Begleitung anfragen <span class="arw">→</span></a>
+          </div>
+        </div>
+        <div class="feature-side">
+          <div class="media-frame"><img src="assets/img_ae7af469.jpg" alt="Viktoria Langjahr"></div>
+          <div class="pull">Deine Vergangenheit hat deine Geschichte geprägt. Die nächsten Kapitel schreibst du selbst.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="akademie" class="anchor">
+    <div class="wrap">
+      <div class="sec-head rev-up">
+        <span class="eyebrow">Für Fachkräfte</span>
+        <h2>Wenn du dein Fachwissen erweitern willst.</h2>
+      </div>
+      <div class="split" style="margin-top:34px">
+        <div class="rev-up"><div class="media-frame"><img src="assets/img_ad069d68.jpg" alt="Viktoria Langjahr"></div></div>
+        <div class="txt rev-up">
+          <span class="tkind">Ausbildung in der Akademie</span>
+          <h3 class="ftitle">Psychoemotionale Begleitung professionell lernen</h3>
+          <p class="tq">Du arbeitest bereits mit Menschen und möchtest deine Arbeit um einen psychoemotionalen Ansatz erweitern?</p>
+          <p class="muted">In der 4-monatigen Ausbildung lernst du, emotionale Prozesse zu verstehen und Menschen gezielt in Veränderungsprozessen zu begleiten.</p>
+          <p class="muted">Die Ausbildung richtet sich an:</p>
+          <div class="soft-chips" style="margin-top:0">
+            <span class="soft-chip">Heilpraktiker für Psychotherapie</span><span class="soft-chip">Pädagogen</span>
+            <span class="soft-chip">Berater</span><span class="soft-chip">Psychologen</span>
+            <span class="soft-chip">Coaches</span><span class="soft-chip">andere Fachkräfte</span>
+          </div>
+          <div class="offer-meta" style="margin-top:22px"><span>4 Monate</span><span>Fundierte Ausbildung</span><span>Für Fachkräfte</span></div>
+          <div class="btns" style="margin-top:24px">
+            <a class="btn btn-primary" href="kontakt.html">Mehr über die Akademie erfahren <span class="arw">→</span></a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -707,11 +814,7 @@
         <div class="btns">
           <div class="btn-col">
             <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch vereinbaren</a>
-            <span class="btn-note">Kostenfrei · ca. 15 Minuten · telefonisch oder online</span>
-          </div>
-          <div class="btn-col">
-            <a class="btn btn-glass" href="kontakt.html">Termin buchen <span class="arw">→</span></a>
-            <span class="btn-note">Du kennst mich schon? Buche deinen Termin direkt.</span>
+            <span class="btn-note">Kostenfrei · telefonisch oder online</span>
           </div>
         </div>
       </div>

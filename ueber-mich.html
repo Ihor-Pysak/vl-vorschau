@@ -650,6 +650,56 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   @media (min-width:901px){.feature-side{position:sticky;top:110px}}
 
+  /* biography: timeline + sticky photo */
+  .bio{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(30px,5vw,64px);align-items:start;margin-top:38px}
+  @media (min-width:901px){.bio-side{position:sticky;top:110px}}
+  @media (max-width:900px){.bio{grid-template-columns:1fr}.bio-side{order:-1}}
+  .tl{position:relative;padding-left:36px}
+  .tl::before{content:"";position:absolute;left:9px;top:10px;bottom:10px;width:2px;border-radius:2px;
+    background:linear-gradient(180deg,var(--turq),var(--lav) 55%,var(--rose))}
+  .tl-item{position:relative;padding-bottom:34px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-33px;top:3px;width:16px;height:16px;border-radius:50%;
+    background:#fff;border:3px solid var(--lav);box-shadow:0 0 0 5px rgba(183,166,216,.18)}
+  .tl-item.key::before{background:var(--wing-deep);border-color:#fff;box-shadow:0 0 0 5px rgba(156,130,210,.28)}
+  .tl-when{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#3E6E74;margin-bottom:8px}
+  .tl-item p{color:var(--ink-soft)}
+  .tl-item p+p{margin-top:12px}
+  .tl-item .pull{margin:0;font-size:1.3rem}
+
+  /* year marker */
+  .year{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;font-size:1rem;color:#3d565c;margin:6px 0 4px}
+  .year b{font-family:var(--font-display);font-weight:500;font-size:2.3rem;line-height:1;
+    background:var(--wing-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* family system map */
+  .map-card{padding:clamp(24px,3vw,34px);border-radius:28px;text-align:center}
+  .map-card svg{width:100%;max-width:380px;height:auto;display:block;margin:18px auto 0}
+  .map-pulse{transform-box:fill-box;transform-origin:center;animation:mapPulse 3.2s ease-out infinite}
+  @keyframes mapPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.3);opacity:0}}
+  .map-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin-top:14px;font-size:.84rem;color:var(--ink-soft)}
+  .map-legend span{display:inline-flex;align-items:center;gap:8px}
+  .map-legend i{width:13px;height:13px;border-radius:50%;flex:none}
+  .map-legend .lg-prob{background:#fff;border:3px solid var(--rose)}
+  .map-legend .lg-key{background:var(--wing-deep)}
+  .map-q{font-family:var(--font-display);font-size:1.15rem;line-height:1.45;color:var(--ink);margin-top:20px}
+  .map-sub{font-size:.9rem;color:var(--ink-soft);margin-top:6px}
+  @media (prefers-reduced-motion:reduce){.map-pulse{animation:none;opacity:0}}
+
+  /* question & answer */
+  .ask{margin-top:48px;max-width:780px}
+  .ask-lbl{color:var(--ink-soft)}
+  .ask-q{font-family:var(--font-display);font-size:clamp(1.45rem,2.8vw,2rem);line-height:1.3;color:var(--ink);margin-top:8px}
+  .ask-a{margin-top:12px;color:#3d565c;font-size:1.05rem}
+
+  /* languages */
+  .lang-band{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 28px;
+    padding:clamp(22px,3vw,30px) clamp(24px,3.4vw,36px);border-radius:24px}
+  .lang-band p{color:#3d565c;font-size:1.02rem}
+  .lang-pills{display:flex;gap:10px;flex-wrap:wrap}
+  .lang-pill{font-family:var(--font-display);font-size:1.15rem;padding:.45em 1.35em;border-radius:999px;
+    background:#fff;border:1px solid #E7DEE8;color:var(--ink);box-shadow:var(--shadow-sm)}
+
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -688,9 +738,12 @@
       <div class="stack rev-up">
         <span class="eyebrow">Über mich</span>
         <h1>Ich bin <span class="hl">Viktoria</span>.</h1>
-        <p class="lead">Psychoemotionale Begleitung für Kinder, Jugendliche und Erwachsene – weil Veränderung bei den Emotionen beginnt.</p>
-        <p class="muted">Vielleicht kennst du das Gefühl, wenn das Leben dich zu deiner Bestimmung führt. Genau so ist es mir ergangen.</p>
-        
+        <p class="lead">Psychoemotionale Begleitung für Kinder, Jugendliche und Erwachsene.</p>
+        <div class="soft-chips">
+          <span class="soft-chip">Studium der Sozialen Arbeit &amp; Sozialpädagogik</span>
+          <span class="soft-chip">Eigene Praxis seit 2018</span>
+          <span class="soft-chip">Akademie seit 2024</span>
+        </div>
         <div class="btns">
           <div class="btn-col">
             <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch vereinbaren</a>
@@ -703,33 +756,39 @@
   </section>
 
   <section>
-    <div class="wrap split split-top">
-      <div class="txt story rev-up">
-        <span class="eyebrow">Mein Weg</span>
-        <h2>Die Schwierigkeiten im Leben haben mich zu dieser Arbeit gebracht.</h2>
-        <p class="muted">Als Kind war ich oft krank, hatte Schwierigkeiten in der Familie – und mir wurde gesagt, ich sei „zu sensibel“. Später musste ich selbst eine sehr schwere Krankheit überstehen, und auch meine Tochter war schwer erkrankt. Nach dieser Zeit hatte ich das Gefühl, in ein tiefes Loch gefallen zu sein, und musste mich zurück ins Leben kämpfen.</p>
-        <p class="muted">Ich suchte Hilfe bei Spezialisten – aber die klassische Psychotherapie brachte mir keine Verbesserung. Damals arbeitete ich bereits seit vielen Jahren als Sozialarbeiterin in der Schwangerschaftsberatung. Ich wusste, wie man Menschen hilft – und erlebte trotzdem Fälle, die in eine Sackgasse führten.</p>
-        <p class="muted">Durch Zufall erfuhr ich, dass meine Cousine, die zehn Jahre lang nicht schwanger werden konnte, mit Hypnosetherapie Erfolg hatte. Da spürte ich: Das will ich lernen – und einen Weg finden, mir selbst zu helfen. Schon während der Ausbildung kamen meine Energie und Balance zurück.</p>
-        <p class="muted">Ich lernte zusätzlich Visualisierungstechniken, die sich besonders gut für die Arbeit mit Kindern eignen, und eröffnete meine eigene Praxis. Seitdem begleite ich Menschen dabei, ihre Probleme in kurzer Zeit zu lösen.</p>
-      </div>
-      <div class="rev-up">
-        <div class="ph-img" style="margin-bottom:22px"><img src="assets/img_b0741d38.jpg" alt="Viktoria Langjahr" style="height:clamp(260px,30vw,360px)"></div>
-        <div class="pull">„Meine Sensibilität, die mich als Kind zunächst gehindert hat, hilft mir heute, mich in meine Klienten hineinzuversetzen – und schnell die Ursache der Probleme zu finden.“</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
     <div class="wrap">
-      <div class="support-panel rev-up">
-        <span class="eyebrow">Was mich trägt</span>
-        <h2 style="margin-top:14px">Familie ist unser Fundament.</h2>
-        <p class="muted" style="margin-top:14px;max-width:70ch">Für mich sind Familie, mein Mann und meine Kinder der größte Wert. Wenn das Fundament stark und stabil ist, stehen wir fest – und kein Lebenssturm kann uns wegwehen. Kindern, Eltern und Paaren zu helfen, ihre Kraft schnell wiederzufinden, ist für mich pures Glück: zu sehen, wie Harmonie in die Familie zurückkehrt und Eltern und Kinder ihre Probleme über Bord werfen.</p>
-        <div class="chips" style="margin-top:26px">
-          <span class="chip">Sozialarbeiterin (Schwangerschaftsberatung)</span>
-          <span class="chip">Ausbildung in Hypnotherapie</span>
-          <span class="chip">Visualisierungstechniken</span>
-          <span class="chip">Eigene Praxis</span>
+      <div class="sec-head rev-up">
+        <span class="eyebrow">Mein Weg</span>
+        <h2>Von eigenen Erfahrungen zu meiner heutigen Arbeit.</h2>
+      </div>
+      <div class="bio">
+        <div class="tl rev-up">
+          <div class="tl-item">
+            <div class="tl-when">Kindheit in Kirgisien</div>
+            <p>Ich bin in Kirgisien aufgewachsen und war schon als Kind ein sehr sensibles und feinfühliges Mädchen. In meiner Familie war es nicht immer einfach, und oft wurde ich als „zu sensibel“ abgestempelt.</p>
+            <p>Schon als Kind musste ich schwierige Situationen meistern. Ich litt unter einer schweren Form von Neurodermitis und wurde von meinen Eltern zu zahlreichen Ärzten gebracht. Später kamen weitere gesundheitliche Herausforderungen dazu.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-when">Mit 11 Jahren</div>
+            <p>Mit 11 Jahren kam ich nach Deutschland. Ein neues Land, eine neue Sprache und viele neue Herausforderungen.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-when">Mit 16 Jahren</div>
+            <p>Mit 16 Jahren erkrankte ich an Krebs. Die Zeit danach war lang und schwer. Ich brauchte lange, um wieder ins Leben zurückzufinden und wieder festen Boden unter den Füßen zu bekommen.</p>
+          </div>
+          <div class="tl-item key">
+            <div class="tl-when">Schon damals</div>
+            <div class="pull">Ich wollte Menschen helfen.</div>
+            <p style="margin-top:14px">Denn ich wusste aus eigener Erfahrung, wie sich Angst, Hilflosigkeit und das Gefühl anfühlen, nicht weiterzuwissen. Das, was ich selbst erlebt hatte, sollte möglichst kein anderer Mensch erleben müssen.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-when">Studium &amp; Beruf</div>
+            <p>Deshalb entschied ich mich für ein Studium der Sozialen Arbeit und Sozialpädagogik. Ich wollte Menschen professionell begleiten und sie dabei unterstützen, schwierige Lebenssituationen zu bewältigen.</p>
+            <p>Anschließend arbeitete ich viele Jahre im sozialen Dienst des Jugendamtes und später in einer Schwangerenberatungsstelle.</p>
+          </div>
+        </div>
+        <div class="bio-side rev-up">
+          <div class="media-frame"><img src="assets/img_b0741d38.jpg" alt="Viktoria Langjahr"></div>
         </div>
       </div>
     </div>
@@ -737,17 +796,157 @@
 
   <section>
     <div class="wrap">
+      <div class="statement rev-up">
+        <span class="eyebrow">Der Moment, der alles veränderte</span>
+        <h2 style="margin-top:14px;max-width:26ch">Als meine Tochter mit sieben Jahren schwer an Krebs erkrankte.</h2>
+        <p>Für unsere Familie begann eine besonders belastende Zeit. Wir durchlebten eine schwere Therapie, große Ängste und eine enorme emotionale Belastung. Zum Glück wurde meine Tochter wieder gesund.</p>
+        <p>Doch nachdem diese schwere Zeit vorbei war, fiel ich selbst in ein tiefes Loch. Ich entwickelte Depressionen und Panikattacken und wusste nicht mehr weiter.</p>
+        <p>Ich suchte nach Lösungen und nahm Hilfe bei Ärzten und Psychotherapeuten in Anspruch. Doch für mich fand sich dort nicht die Lösung, nach der ich suchte. Dann stieß ich durch Zufall auf Methoden, die meinen eigenen Gefühlszustand sehr schnell wieder ins Gleichgewicht brachten.</p>
+        <div class="pull" style="margin-top:26px;max-width:560px">Diese Erfahrung hat mein Leben verändert.</div>
+        <p>Ich wollte verstehen, wie das möglich ist. Deshalb ließ ich mich in diesen Methoden ausbilden und begann, mich immer weiter fortzubilden.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="txt rev-up">
+        <span class="eyebrow">Meine eigene Arbeitsweise</span>
+        <h2>Aus Erfahrung wurde Expertise.</h2>
+        <div class="year"><b>2018</b>eröffnete ich meine eigene Praxis – vor Ort und online.</div>
+        <p class="muted">Zunächst arbeitete ich vor allem mit Kindern. Die schnellen und deutlichen Veränderungen führten dazu, dass Eltern mich immer häufiger fragten: <i>„Funktioniert das auch bei Erwachsenen?“</i> Also begann ich, auch Erwachsene zu begleiten.</p>
+        <p class="muted">Parallel dazu lernte ich immer weiter. Ich absolvierte zahlreiche Aus- und Weiterbildungen, lernte neue Techniken kennen, probierte sie aus, kombinierte unterschiedliche Ansätze und beobachtete genau, was Menschen wirklich weiterbringt. So entwickelte sich Schritt für Schritt meine eigene Arbeitsweise.</p>
+        <p class="muted">Dabei wurde mir immer deutlicher, wie wichtig es ist, nicht nur den einzelnen Menschen zu betrachten, sondern auch sein Familiensystem. Denn wir beeinflussen uns gegenseitig: Manchmal zeigt sich ein Problem bei einer Person, während der entscheidende Zusammenhang an einer ganz anderen Stelle im Familiensystem liegt.</p>
+      </div>
+      <div class="rev-up">
+        <div class="map-card glasswrap">
+          <span class="eyebrow">Das Familiensystem als Landkarte</span>
+          <svg viewBox="0 0 360 250" role="img" aria-label="Ein Familiensystem als Landkarte: mehrere verbundene Personen. Bei einem Kind zeigt sich das Problem, der entscheidende Punkt liegt bei einer anderen Person.">
+            <defs>
+              <linearGradient id="mapg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4FA9B5"/><stop offset=".55" stop-color="#9C82D2"/><stop offset="1" stop-color="#E282A9"/>
+              </linearGradient>
+            </defs>
+            <g fill="none" stroke="#5E777D" stroke-opacity=".32" stroke-width="2" stroke-linecap="round">
+              <path d="M180 38 L98 102"/><path d="M180 38 L262 102"/>
+              <path d="M98 102 L262 102" stroke-dasharray="5 7"/>
+              <path d="M98 102 L72 202"/><path d="M98 102 L180 208"/>
+              <path d="M262 102 L180 208"/><path d="M262 102 L288 198"/>
+            </g>
+            <circle class="map-pulse" cx="262" cy="102" r="17" fill="none" stroke="#9C82D2" stroke-width="2"/>
+            <g fill="#fff" stroke="#B7A6D8" stroke-width="2.5">
+              <circle cx="180" cy="38" r="13"/>
+              <circle cx="98" cy="102" r="15"/>
+              <circle cx="180" cy="208" r="13"/>
+              <circle cx="288" cy="198" r="13"/>
+            </g>
+            <circle cx="72" cy="202" r="13" fill="#fff" stroke="#ED9FBF" stroke-width="3.5"/>
+            <circle cx="262" cy="102" r="17" fill="url(#mapg)"/>
+          </svg>
+          <div class="map-legend">
+            <span><i class="lg-prob"></i>Hier zeigt sich das Problem</span>
+            <span><i class="lg-key"></i>Hier liegt der entscheidende Punkt</span>
+          </div>
+          <p class="map-q">Wo liegt der entscheidende Punkt? Und wie kommen wir schnellstmöglich zum Ziel?</p>
+          <p class="map-sub">Ich betrachte diese Landkarte aus verschiedenen Perspektiven.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head rev-up">
+        <span class="eyebrow">Warum meine Arbeit so individuell ist</span>
+        <h2>Aus dem, was sich als besonders wirksam erwiesen hat, entstand meine eigene Technik.</h2>
+        <p class="muted txt-narrow">Über die Jahre habe ich zahlreiche Methoden kennengelernt, angewendet, weiterentwickelt und miteinander verbunden. Dabei geht es nicht darum, Probleme immer wieder ausführlich zu analysieren – im Mittelpunkt steht das emotionale Erleben. Denn wenn sich das emotionale Erleben verändert, verändert sich auch das Denken und Handeln.</p>
+        <div class="qualities">
+          <span class="quality">psychoemotional</span>
+          <span class="quality">individuell</span>
+          <span class="quality">lösungsorientiert</span>
+        </div>
+      </div>
+
+      <div class="ask rev-up">
+        <p class="ask-lbl">Immer wieder werde ich gefragt:</p>
+        <p class="ask-q">„Viktoria, wie schaffst du es, so schnell Ergebnisse zu erzielen?“</p>
+        <p class="ask-a">Meine Antwort: <b>Es ist nicht eine einzelne Methode.</b></p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat glasswrap rev-up">
+          <span class="fi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 12 4.5l9 4-9 4-9-4z"/><path d="M7 10.8V15c0 1.4 2.2 2.6 5 2.6s5-1.2 5-2.6v-4.2"/></svg></span>
+          <h3>Viele Jahre Ausbildung</h3>
+          <p>Studium der Sozialen Arbeit und zahlreiche Ausbildungen in wirksamen Methoden.</p>
+        </div>
+        <div class="feat glasswrap rev-up">
+          <span class="fi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.8 8.5 4.4L12 12.6 3.5 8.2z"/><path d="m3.5 12.4 8.5 4.4 8.5-4.4"/><path d="m3.5 16.4 8.5 4.4 8.5-4.4"/></svg></span>
+          <h3>Weiterbildung</h3>
+          <p>Neue Techniken kennenlernen, ausprobieren und miteinander verbinden.</p>
+        </div>
+        <div class="feat glasswrap rev-up">
+          <span class="fi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><path d="M15.5 5.2a3.2 3.2 0 0 1 0 6.1"/><path d="M17.5 14.4a5.5 5.5 0 0 1 3 5.1"/></svg></span>
+          <h3>Praktische Erfahrung</h3>
+          <p>Seit 2018 in eigener Praxis – mit Kindern und Erwachsenen, vor Ort und online.</p>
+        </div>
+        <div class="feat glasswrap rev-up">
+          <span class="fi"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span>
+          <h3>Der Mensch als Ganzes</h3>
+          <p>Genau dort ansetzen, wo die Veränderung entstehen kann.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="rev-up"><div class="media-frame"><img src="assets/img_56a67b52.jpg" alt="Viktoria Langjahr"></div></div>
+      <div class="txt rev-up">
+        <span class="eyebrow">Meine Akademie</span>
+        <h2>Wissen weitergeben, damit mehr Menschen schneller Hilfe erfahren.</h2>
+        <div class="year"><b>2024</b>habe ich meine eigene Akademie gegründet.</div>
+        <p class="muted">Zunächst entwickelte ich Kurse für Eltern, damit sie ihre Kinder besser verstehen und emotional unterstützen können. Heute bilde ich auch Fachleute aus, die bereits mit Menschen arbeiten und meine psychoemotionale Arbeitsweise kennenlernen und in ihre eigene Arbeit integrieren möchten.</p>
+        <p class="muted">Denn mein Ziel ist heute dasselbe wie damals als Kind:</p>
+        <div class="pull" style="margin:4px 0 0">Menschen wirksam zu helfen.</div>
+        <div class="roles" style="flex-direction:column;align-items:flex-start">
+          <span class="role"><i></i>Damit sie nicht länger leiden müssen, als es notwendig ist.</span>
+          <span class="role"><i></i>Damit sie erleben können, dass Veränderung möglich ist.</span>
+          <span class="role"><i></i>Damit sie schnell wieder mehr Freiheit, Sicherheit, Leichtigkeit und Vertrauen in sich selbst erfahren.</span>
+        </div>
+        <div class="btns" style="margin-top:26px">
+          <a class="btn btn-glass" href="kurse.html#akademie">Zu Kursen &amp; Akademie <span class="arw">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="lang-band glasswrap rev-up">
+        <div>
+          <span class="eyebrow">Sprachen</span>
+          <p style="margin-top:10px">Meine Begleitung ist auf Deutsch und Russisch möglich.</p>
+        </div>
+        <div class="lang-pills"><span class="lang-pill">Deutsch</span><span class="lang-pill" lang="ru">Русский</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
       <div class="cta rev-up">
-        <h2>Lern mich persönlich kennen.</h2>
-        <p>Im kostenlosen Erstgespräch bekommst du ein Gefühl dafür, ob meine Art zu dir passt.</p>
+        <span class="eyebrow" style="justify-content:center;color:#2c4c52">Mein Warum</span>
+        <h2 style="margin-top:16px">Was ich selbst erlebt habe, hat meinen Weg geprägt.</h2>
+        <p>Heute verbinde ich meine persönlichen Erfahrungen, meine langjährige Arbeit mit Menschen, meine zahlreichen Aus- und Weiterbildungen und meine eigene entwickelte Arbeitsweise. Was ich selbst so lange gesucht habe, möchte ich heute anderen Menschen zugänglich machen.</p>
+        <div class="qualities">
+          <span class="quality">Weniger Leid</span>
+          <span class="quality">Mehr Verständnis</span>
+          <span class="quality">Schnellere Veränderung</span>
+          <span class="quality">Mehr Lebensqualität</span>
+        </div>
         <div class="btns">
           <div class="btn-col">
             <a class="btn btn-primary" href="kontakt.html">Kostenloses Erstgespräch vereinbaren</a>
-            <span class="btn-note">Kostenfrei · ca. 15 Minuten · telefonisch oder online</span>
-          </div>
-          <div class="btn-col">
-            <a class="btn btn-glass" href="kontakt.html">Termin buchen <span class="arw">→</span></a>
-            <span class="btn-note">Du kennst mich schon? Buche deinen Termin direkt.</span>
+            <span class="btn-note">Kostenfrei · telefonisch oder online</span>
           </div>
         </div>
       </div>

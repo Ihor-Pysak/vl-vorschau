@@ -30,3 +30,39 @@
   /* highlighted quality chip */
   .quality.hi{background:var(--wing-deep);color:#fff;border-color:transparent}
   .qualities.lg .quality{font-size:1.2rem;padding:.5em 1.35em}
+
+  /* method cards (2-up) */
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:38px}
+  .method{padding:clamp(26px,3.6vw,38px);border-radius:26px;display:flex;flex-direction:column;gap:14px;
+    transition:transform .2s ease,box-shadow .2s ease}
+  .method:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .method .mh{display:flex;align-items:center;gap:16px}
+  .method .mi2{width:54px;height:54px;border-radius:17px;background:var(--wing-deep);color:#fff;
+    display:grid;place-items:center;box-shadow:var(--shadow-sm);flex:none}
+  .method h3{font-size:1.5rem;margin-top:2px}
+  .method .mtag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#3E6E74}
+  .method p{color:var(--ink-soft)}
+  .method .hl-line{font-family:var(--font-display);font-size:1.1rem;line-height:1.45;color:var(--ink);
+    padding-top:14px;border-top:1px dashed rgba(94,119,125,.22)}
+  @media (max-width:760px){.method-grid{grid-template-columns:1fr}}
+
+  /* session facts */
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  .fact{padding:18px 18px 16px;border-radius:18px;background:rgba(255,255,255,.66);
+    border:1px solid rgba(255,255,255,.92);box-shadow:var(--shadow-sm)}
+  .fact .fn{font-family:var(--font-display);font-size:clamp(1.6rem,2.6vw,2rem);line-height:1.05;
+    background:var(--wing-text);-webkit-background-clip:text;background-clip:text;color:transparent;
+    white-space:nowrap}
+  .fact .fl{margin-top:6px;font-size:.86rem;line-height:1.4;color:var(--ink-soft)}
+
+  /* upcoming price */
+  .price-next{margin-top:10px;display:inline-flex;align-items:baseline;gap:8px;align-self:flex-start;
+    font-size:.84rem;color:#3d565c;background:rgba(237,159,191,.14);border:1px solid rgba(237,159,191,.38);
+    border-radius:999px;padding:.4em 1em}
+  .price-next b{font-family:var(--font-display);font-size:1.02rem;font-weight:500;color:var(--ink)}
+
+  /* flow inside statement + qualities inside CTA */
+  .statement .flow3{margin-top:26px}
+  .cta .qualities{justify-content:center;margin-top:24px}
+
+  .method .hl-line{margin-top:auto}

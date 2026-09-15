@@ -798,6 +798,22 @@
       document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mnav.hidden){setOpen(false);burger.focus()}});
       matchMedia('(min-width:901px)').addEventListener('change',function(m){if(m.matches)setOpen(false)});
     }
+    var map=document.querySelector('[data-map]');
+    if(map&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+      var msvg=map.querySelector('svg'), mapStarted=false;
+      var mapRun=function(on){
+        if(on&&!mapStarted){
+          mapStarted=true; map.classList.add('loop');
+          msvg.querySelectorAll('animate,animateMotion').forEach(function(a){a.beginElement()});
+        } else if(mapStarted){
+          if(on){msvg.unpauseAnimations();map.classList.remove('paused')}
+          else{msvg.pauseAnimations();map.classList.add('paused')}
+        }
+      };
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(function(en){mapRun(en[0].isIntersecting)},{threshold:.4}).observe(map);
+      } else mapRun(true);
+    }
   })();
 </script>
 </body>

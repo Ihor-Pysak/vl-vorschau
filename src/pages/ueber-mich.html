@@ -85,33 +85,61 @@
         <p class="muted">Dabei wurde mir immer deutlicher, wie wichtig es ist, nicht nur den einzelnen Menschen zu betrachten, sondern auch sein Familiensystem. Denn wir beeinflussen uns gegenseitig: Manchmal zeigt sich ein Problem bei einer Person, während der entscheidende Zusammenhang an einer ganz anderen Stelle im Familiensystem liegt.</p>
       </div>
       <div class="rev-up">
-        <div class="map-card glasswrap">
+        <div class="map-card glasswrap" data-map>
           <span class="eyebrow">Das Familiensystem als Landkarte</span>
-          <svg viewBox="0 0 360 250" role="img" aria-label="Ein Familiensystem als Landkarte: mehrere verbundene Personen. Bei einem Kind zeigt sich das Problem, der entscheidende Punkt liegt bei einer anderen Person.">
+          <svg viewBox="0 0 360 250" role="img" aria-label="Ein Familiensystem als Landkarte: mehrere verbundene Personen. Bei einer Person zeigt sich das Problem, der entscheidende Punkt liegt bei einer anderen Person – ein Weg über die Verbindungen führt dorthin.">
             <defs>
               <linearGradient id="mapg" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0" stop-color="#4FA9B5"/><stop offset=".55" stop-color="#9C82D2"/><stop offset="1" stop-color="#E282A9"/>
               </linearGradient>
+              <linearGradient id="maproute" gradientUnits="userSpaceOnUse" x1="72" y1="202" x2="262" y2="102">
+                <stop offset="0" stop-color="#ED9FBF"/><stop offset="1" stop-color="#9C82D2"/>
+              </linearGradient>
             </defs>
-            <g fill="none" stroke="#5E777D" stroke-opacity=".32" stroke-width="2" stroke-linecap="round">
-              <path d="M180 38 L98 102"/><path d="M180 38 L262 102"/>
-              <path d="M98 102 L262 102" stroke-dasharray="5 7"/>
-              <path d="M98 102 L72 202"/><path d="M98 102 L180 208"/>
-              <path d="M262 102 L180 208"/><path d="M262 102 L288 198"/>
+            <g fill="none" stroke="#9C82D2" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 6" aria-hidden="true">
+              <path d="M30 140C22 70 110 16 196 22S350 64 344 138S256 246 170 240S38 210 30 140Z"/>
+              <path d="M118 118C112 70 176 46 236 50S322 78 318 120S272 184 214 180S124 166 118 118Z"/>
+              <path d="M196 104C194 76 226 62 258 66S304 86 300 108S276 146 248 144S198 132 196 104Z"/>
+              <path d="M232 102C232 86 248 78 264 80S290 92 288 106S272 126 258 124S232 118 232 102Z"/>
             </g>
-            <circle class="map-pulse" cx="262" cy="102" r="17" fill="none" stroke="#9C82D2" stroke-width="2"/>
-            <g fill="#fff" stroke="#B7A6D8" stroke-width="2.5">
-              <circle cx="180" cy="38" r="13"/>
-              <circle cx="98" cy="102" r="15"/>
-              <circle cx="180" cy="208" r="13"/>
-              <circle cx="288" cy="198" r="13"/>
+            <g>
+              <g fill="none" stroke="#52696F" stroke-opacity=".3" stroke-width="2" stroke-linecap="round">
+                <path d="M180 38L98 102"/><path d="M180 38L262 102"/>
+                <path d="M98 102L180 208"/><path d="M262 102L180 208"/><path d="M262 102L288 198"/>
+              </g>
+              <g fill="#fff" stroke="#B7A6D8" stroke-width="2.5">
+                <circle cx="180" cy="38" r="13"/><circle cx="180" cy="208" r="13"/><circle cx="288" cy="198" r="13"/>
+              </g>
+              <animate attributeName="opacity" values="1;1;.28;.28;1;1" keyTimes="0;.04;.12;.8;.92;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
             </g>
+            <g fill="none" stroke="#52696F" stroke-opacity=".3" stroke-width="2" stroke-linecap="round">
+              <path d="M98 102L72 202"/><path d="M98 102L262 102" stroke-dasharray="5 7"/>
+            </g>
+            <path d="M72 202L98 102L262 102" fill="none" stroke="url(#maproute)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" opacity="0">
+              <animate attributeName="stroke-dashoffset" values="1;1;0;0" keyTimes="0;.1;.36;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.09;.1;.8;.92;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+            </path>
+            <circle cx="98" cy="102" r="15" fill="#fff" stroke="#B7A6D8" stroke-width="2.5"/>
+            <circle cx="72" cy="202" r="13" fill="none" stroke="#ED9FBF" stroke-width="2" opacity="0">
+              <animate attributeName="r" values="13;13;28;28" keyTimes="0;.02;.2;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;.8;0;0" keyTimes="0;.02;.2;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+            </circle>
             <circle cx="72" cy="202" r="13" fill="#fff" stroke="#ED9FBF" stroke-width="3.5"/>
-            <circle cx="262" cy="102" r="17" fill="url(#mapg)"/>
+            <circle cx="262" cy="102" r="17" fill="none" stroke="#9C82D2" stroke-width="2" opacity="0">
+              <animate attributeName="r" values="17;17;38;38" keyTimes="0;.36;.56;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;0;.8;0;0" keyTimes="0;.355;.36;.56;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="262" cy="102" r="17" fill="url(#mapg)">
+              <animate attributeName="r" values="17;17;21;17;17" keyTimes="0;.36;.42;.5;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+            </circle>
+            <circle r="5.5" fill="#fff" stroke="#9C82D2" stroke-width="2.5" opacity="0">
+              <animateMotion path="M72 202L98 102L262 102" keyPoints="0;0;1;1" keyTimes="0;.1;.36;1" calcMode="linear" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.09;.1;.36;.4;1" dur="7s" begin="indefinite" repeatCount="indefinite"/>
+            </circle>
           </svg>
           <div class="map-legend">
-            <span><i class="lg-prob"></i>Hier zeigt sich das Problem</span>
-            <span><i class="lg-key"></i>Hier liegt der entscheidende Punkt</span>
+            <span class="lg-row lg-row-prob"><i class="lg-prob"></i>Hier zeigt sich das Problem</span>
+            <span class="lg-row lg-row-key"><i class="lg-key"></i>Hier liegt der entscheidende Punkt</span>
           </div>
           <p class="map-q">Wo liegt der entscheidende Punkt? Und wie kommen wir schnellstmöglich zum Ziel?</p>
           <p class="map-sub">Ich betrachte diese Landkarte aus verschiedenen Perspektiven.</p>

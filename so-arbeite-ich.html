@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=25e528b4">
+<link rel="stylesheet" href="assets/site.css?v=50c89bdd">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -308,6 +308,22 @@
       mnav.addEventListener('click',function(e){if(e.target.closest('a'))setOpen(false)});
       document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!mnav.hidden){setOpen(false);burger.focus()}});
       matchMedia('(min-width:901px)').addEventListener('change',function(m){if(m.matches)setOpen(false)});
+    }
+    var map=document.querySelector('[data-map]');
+    if(map&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+      var msvg=map.querySelector('svg'), mapStarted=false;
+      var mapRun=function(on){
+        if(on&&!mapStarted){
+          mapStarted=true; map.classList.add('loop');
+          msvg.querySelectorAll('animate,animateMotion').forEach(function(a){a.beginElement()});
+        } else if(mapStarted){
+          if(on){msvg.unpauseAnimations();map.classList.remove('paused')}
+          else{msvg.pauseAnimations();map.classList.add('paused')}
+        }
+      };
+      if('IntersectionObserver' in window){
+        new IntersectionObserver(function(en){mapRun(en[0].isIntersecting)},{threshold:.4}).observe(map);
+      } else mapRun(true);
     }
   })();
 </script>

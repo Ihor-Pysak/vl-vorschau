@@ -139,17 +139,20 @@
 
   /* family system map */
   .map-card{padding:clamp(24px,3vw,34px);border-radius:28px;text-align:center}
-  .map-card svg{width:100%;max-width:380px;height:auto;display:block;margin:18px auto 0}
-  .map-pulse{transform-box:fill-box;transform-origin:center;animation:mapPulse 3.2s ease-out infinite}
-  @keyframes mapPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.3);opacity:0}}
-  .map-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin-top:14px;font-size:.84rem;color:var(--ink-soft)}
-  .map-legend span{display:inline-flex;align-items:center;gap:8px}
+  .map-card svg{width:100%;max-width:380px;height:auto;display:block;margin:18px auto 0;overflow:visible}
+  .map-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;margin-top:14px;font-size:.84rem;color:var(--ink-soft)}
+  .map-legend .lg-row{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px}
   .map-legend i{width:13px;height:13px;border-radius:50%;flex:none}
   .map-legend .lg-prob{background:#fff;border:3px solid var(--rose)}
   .map-legend .lg-key{background:var(--wing-deep)}
   .map-q{font-family:var(--font-display);font-size:1.15rem;line-height:1.45;color:var(--ink);margin-top:20px}
   .map-sub{font-size:.9rem;color:var(--ink-soft);margin-top:6px}
-  @media (prefers-reduced-motion:reduce){.map-pulse{animation:none;opacity:0}}
+  /* legend follows the SVG story loop (same 7 s clock) */
+  .map-card.loop .lg-row-prob{animation:lgProb 7s linear infinite}
+  .map-card.loop .lg-row-key{animation:lgKey 7s linear infinite}
+  .map-card.paused .lg-row{animation-play-state:paused}
+  @keyframes lgProb{0%{background:transparent;color:var(--ink-soft)}3%,34%{background:rgba(237,159,191,.22);color:var(--ink)}40%,100%{background:transparent;color:var(--ink-soft)}}
+  @keyframes lgKey{0%,35%{background:transparent;color:var(--ink-soft)}38%,80%{background:rgba(156,130,210,.18);color:var(--ink)}90%,100%{background:transparent;color:var(--ink-soft)}}
 
   /* question & answer */
   .ask{margin-top:48px;max-width:780px}

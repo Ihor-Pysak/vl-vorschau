@@ -208,3 +208,78 @@
 
   /* performance: no animated blur layers on phones */
   @media (max-width:900px){.ambient b{animation:none}}
+
+  /* hero: the visitor's own thought (rotates) */
+  .hthought{margin-top:22px;padding:18px 20px 16px;border-radius:20px;max-width:560px;
+    background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.95);box-shadow:var(--shadow-sm)}
+  .th-lbl{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#3E6E74}
+  .th-stage{display:grid;margin-top:8px}
+  .th-q{grid-area:1/1;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+    opacity:0;visibility:hidden;transform:translateY(6px);
+    transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
+  .th-q.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+  .th-txt{font-family:var(--font-display);font-size:clamp(1.22rem,2vw,1.5rem);line-height:1.35;color:var(--ink)}
+  .th-go{font-size:.86rem;font-weight:600;color:#3E6E74;display:inline-flex;gap:6px;align-items:center}
+  .th-go .arw{transition:transform .18s ease}
+  .th-q:hover .th-go .arw{transform:translateX(3px)}
+  .th-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .th-tab{font:inherit;font-size:.8rem;font-weight:600;color:var(--ink-soft);cursor:pointer;
+    background:#fff;border:1px solid #E7DEE8;border-radius:999px;padding:.38em .95em;transition:background .2s ease,color .2s ease}
+  .th-tab[aria-pressed="true"]{background:var(--wing-deep);color:#fff;border-color:transparent}
+  .th-tab:focus-visible{outline:3px solid var(--turq);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){.th-q{transition:none}}
+  @media (max-width:900px){
+    .hthought{max-width:none}
+    .hero .portrait img{aspect-ratio:5/4;object-position:50% 26%}
+    .hero .portrait-wrap{max-width:520px}
+  }
+  @media (max-width:560px){.hero .flowchip{display:none}}
+
+  /* video testimonials */
+  .tvids{display:grid;grid-template-columns:repeat(3,minmax(0,240px));justify-content:center;gap:20px;margin-top:38px}
+  .tvid{margin:0;display:flex;flex-direction:column;gap:10px}
+  .tv-poster{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:22px;overflow:hidden;padding:0;
+    background:linear-gradient(160deg,rgba(121,191,199,.35),rgba(183,166,216,.3) 55%,rgba(237,159,191,.38));
+    border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow-sm)}
+  .tv-poster img{width:100%;height:100%;object-fit:cover}
+  .tvid.soon .play{opacity:.75}
+  .tvid.soon .play::before{display:none}
+  .tvid iframe{width:100%;aspect-ratio:9/16;border:0;border-radius:22px;display:block}
+  .tvid figcaption{font-size:.86rem;color:var(--ink-soft);text-align:center}
+  .tvid figcaption b{display:block;color:var(--ink);font-weight:600}
+  #erfahrungen .revs{margin-top:30px}
+  @media (max-width:760px){
+    .tvids{display:flex;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+      margin-left:-24px;margin-right:-24px;padding:4px 24px 10px;scroll-padding-left:24px}
+    .tvid{flex:0 0 60%;scroll-snap-align:start}
+  }
+
+  /* audiences: link for professionals */
+  .who-more{margin-top:24px;text-align:center;color:var(--ink-soft);font-size:.95rem}
+  .who-more a{font-weight:600;color:#3E6E74;margin-left:6px;white-space:nowrap}
+
+  /* first steps */
+  .start{list-style:none;margin:38px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .start-step{position:relative;padding:28px 26px 26px;border-radius:24px;display:flex;flex-direction:column;gap:10px}
+  .start-n{width:40px;height:40px;border-radius:50%;background:var(--wing-deep);color:#fff;font-weight:700;
+    display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+  .start-step h3{font-size:1.2rem}
+  .start-step p{font-size:.94rem;color:var(--ink-soft)}
+  .start-tag{align-self:flex-start;margin-top:auto;font-size:.8rem;font-weight:600;color:#3E6E74;
+    background:rgba(121,191,199,.16);border:1px solid rgba(121,191,199,.4);border-radius:999px;padding:.35em .95em}
+  .start-link{margin-top:auto;font-size:.88rem;font-weight:600;color:#3E6E74;display:inline-flex;gap:6px}
+  @media (min-width:901px){
+    .start-step:not(:last-child)::after{content:"";position:absolute;top:46px;right:-17px;width:10px;height:10px;
+      border-top:2px solid var(--lav);border-right:2px solid var(--lav);transform:rotate(45deg)}
+  }
+  @media (max-width:900px){.start{grid-template-columns:1fr;max-width:560px}}
+
+  /* topic chips under the method text */
+  .chips-lbl{margin-top:22px;font-size:.92rem;font-weight:600;color:var(--ink)}
+  #arbeit .chips{margin-top:10px}
+
+  /* health insurance note */
+  .kasse{margin-top:22px;padding:24px 26px;border-radius:22px;max-width:860px}
+  .kasse h3{font-size:1.2rem}
+  .kasse p{margin-top:6px;color:var(--ink-soft)}
+  .kasse .roles{margin-top:16px}

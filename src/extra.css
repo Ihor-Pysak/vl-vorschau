@@ -342,3 +342,14 @@
   .vstory-sq .vstory-media .tvid{max-width:360px}
   .tvid.sq .tv-poster,.tvid.sq iframe{aspect-ratio:1/1}
   @media (max-width:760px){.vstory-sq{grid-template-columns:1fr}.vstory-sq .vstory-media .tvid{max-width:340px}}
+
+  /* secondary info link under a course button */
+  .tier-more{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:2px;
+    font-size:.88rem;font-weight:600;color:#3E6E74;text-decoration:underline;text-underline-offset:3px;
+    text-decoration-color:rgba(62,110,116,.35)}
+  .tier-more:hover{text-decoration-color:currentColor}
+  .tier-more:hover .arw{transform:translateX(3px)}
+  .tier-more .arw{transition:transform .18s ease}
+  .tier-more:focus-visible{outline:3px solid var(--turq);outline-offset:3px;border-radius:4px}
+  .tier .tier-more{margin-top:auto}
+  .tier .tier-more + .btn{margin-top:14px}

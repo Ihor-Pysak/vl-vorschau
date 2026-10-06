@@ -236,8 +236,8 @@
   @media (max-width:560px){.hero .flowchip{display:none}}
 
   /* video testimonials */
-  .tvids{display:grid;grid-template-columns:repeat(3,minmax(0,240px));justify-content:center;gap:20px;margin-top:38px}
-  .tvid{margin:0;display:flex;flex-direction:column;gap:10px}
+  .tvids{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:38px}
+  .tvid{margin:0;display:flex;flex-direction:column;gap:10px;flex:0 0 240px;width:240px}
   .tv-poster{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:22px;overflow:hidden;padding:0;
     background:linear-gradient(160deg,rgba(121,191,199,.35),rgba(183,166,216,.3) 55%,rgba(237,159,191,.38));
     border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow-sm)}
@@ -249,9 +249,9 @@
   .tvid figcaption b{display:block;color:var(--ink);font-weight:600}
   #erfahrungen .revs{margin-top:30px}
   @media (max-width:760px){
-    .tvids{display:flex;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+    .tvids{display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
       margin-left:-24px;margin-right:-24px;padding:4px 24px 10px;scroll-padding-left:24px}
-    .tvid{flex:0 0 60%;scroll-snap-align:start}
+    .tvid{flex:0 0 60%;width:auto;scroll-snap-align:start}
   }
 
   /* audiences: link for professionals */
@@ -290,5 +290,5 @@
   .vstory{display:grid;grid-template-columns:1fr 280px;gap:clamp(30px,6vw,90px);align-items:center;max-width:900px}
   .vstory h2{margin-top:6px}
   .vstory .muted{margin-top:14px}
-  .vstory-media .tvid{max-width:280px;margin:0 auto}
+  .vstory-media .tvid{width:100%;max-width:280px;flex:none;margin:0 auto}
   @media (max-width:760px){.vstory{grid-template-columns:1fr}.vstory-media .tvid{max-width:250px}}

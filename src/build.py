@@ -39,7 +39,7 @@ DESCRIPTIONS = {
     "coaching-eltern.html": "Coaching für Eltern: Wenn dein Kind keine Hilfe möchte, beginnen wir bei dir – für mehr Ruhe, Sicherheit und Verbindung in der Familie.",
     "coaching-paare.html": "Paar-Coaching: verstehen, was hinter euren Konflikten liegt – für wieder mehr Nähe, Verständnis und Verbindung. Kostenloses Erstgespräch.",
     "coaching-erwachsene.html": "Coaching für Erwachsene bei Ängsten, Panik, innerer Unruhe und Selbstzweifeln – wir verändern dein emotionales Erleben.",
-    "so-arbeite-ich.html": "So arbeite ich: psychoemotionale Begleitung mit Visualisierung und Somax – Ablauf, Sitzungen, Ergebnisse und Kosten auf einen Blick.",
+    "so-arbeite-ich.html": "So arbeite ich: psychoemotionale Begleitung mit Visualisierung und Chirotrance – Ablauf, Sitzungen, Ergebnisse und Kosten auf einen Blick.",
     "kurse.html": "Kurse & Programme: Minikurs und SOS-Elternkurs für Eltern, 1:1-Begleitung „Meine Erfolgsgeschichte“ und Ausbildung in der Akademie.",
     "ueber-mich.html": "Über Viktoria Langjahr: Studium der Sozialen Arbeit, eigene Praxis seit 2018, Akademie seit 2024 – Begleitung auf Deutsch und Russisch.",
     "kontakt.html": "Kontakt zu Viktoria Langjahr: kostenloses Erstgespräch vereinbaren, Termin buchen oder per WhatsApp, Telefon und E-Mail schreiben.",

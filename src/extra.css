@@ -336,3 +336,9 @@
 
   /* timeline dots exactly centered on the line (line center = 10px from .tl edge) */
   .tl-item::before{box-sizing:border-box;left:-26px;transform:translateX(-50%)}
+
+  /* square video (source is 1:1) */
+  .vstory-sq{grid-template-columns:1fr 360px}
+  .vstory-sq .vstory-media .tvid{max-width:360px}
+  .tvid.sq .tv-poster,.tvid.sq iframe{aspect-ratio:1/1}
+  @media (max-width:760px){.vstory-sq{grid-template-columns:1fr}.vstory-sq .vstory-media .tvid{max-width:340px}}

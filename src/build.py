@@ -164,7 +164,9 @@ def build():
     (out_assets / "site.css").write_text(css)
 
     out_fonts = OUT / "fonts"
-    out_fonts.mkdir(exist_ok=True)
+    if out_fonts.exists():
+        shutil.rmtree(out_fonts)
+    out_fonts.mkdir()
     for f in (SRC / "fonts").glob("*.woff2"):
         shutil.copy2(f, out_fonts / f.name)
 
@@ -194,7 +196,7 @@ def build():
             f'<meta property="og:url" content="{SITE_URL}{"" if name == "index.html" else name}">',
             '<link rel="icon" href="assets/favicon.png" type="image/png">',
             '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">',
-            '<link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>',
+            '<link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>',
             '<link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>',
             f'<link rel="stylesheet" href="assets/site.css?v={css_hash}">',
         ])

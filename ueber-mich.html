@@ -14,9 +14,9 @@
 <meta property="og:url" content="https://ihor-pysak.github.io/vl-vorschau/ueber-mich.html">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=195ef909">
+<link rel="stylesheet" href="assets/site.css?v=34eeef73">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -404,6 +404,22 @@
       tabs.forEach(function(t,k){t.addEventListener('click',function(){stop();show(k)})});
       ['mouseenter','focusin'].forEach(function(ev){th.addEventListener(ev,function(){hold=true})});
       ['mouseleave','focusout'].forEach(function(ev){th.addEventListener(ev,function(){hold=false})});
+    }
+    var rv=document.querySelector('.rv-track');
+    if(rv){
+      var rbt=document.querySelectorAll('.rv-btn');
+      var smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+      var rvUpd=function(){
+        var max=rv.scrollWidth-rv.clientWidth-2;
+        rbt[0].disabled=rv.scrollLeft<=2; rbt[1].disabled=rv.scrollLeft>=max;
+      };
+      rbt.forEach(function(btn){btn.addEventListener('click',function(){
+        var card=rv.querySelector('.rev');
+        var step=card?card.getBoundingClientRect().width+18:rv.clientWidth;
+        rv.scrollBy({left:step*Number(btn.dataset.dir),behavior:smooth});
+      })});
+      rv.addEventListener('scroll',function(){requestAnimationFrame(rvUpd)},{passive:true});
+      window.addEventListener('resize',rvUpd); rvUpd();
     }
   })();
 </script>

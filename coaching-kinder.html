@@ -14,9 +14,9 @@
 <meta property="og:url" content="https://ihor-pysak.github.io/vl-vorschau/coaching-kinder.html">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=195ef909">
+<link rel="stylesheet" href="assets/site.css?v=34eeef73">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -114,11 +114,11 @@
       </div>
       <div class="vstory-media">
         <figure class="tvid rev-up">
-          <button class="video-poster tv-poster" type="button" data-video="dk3Me-X7XXw" aria-label="Video abspielen: Erfahrung einer Mutter eines 12-jährigen Sohnes (2:37)">
+          <button class="video-poster tv-poster" type="button" data-video="dk3Me-X7XXw" aria-label="Video abspielen: 12-jähriger Junge mit Unruhe, Ängsten und Schlafstörungen – Erfahrung seiner Mutter (2:37)">
             <img src="assets/img_tv1-720.webp" srcset="assets/img_tv1-640.webp 640w, assets/img_tv1-720.webp 720w" sizes="(max-width: 900px) 92vw, 560px" width="720" height="1280" loading="lazy" decoding="async" alt="Eine Mutter erzählt von ihrem 12-jährigen Sohn">
             <span class="play" aria-hidden="true"><span class="tri"></span></span>
           </button>
-          <figcaption><b>Mutter eines 12-jährigen Sohnes</b>Video · 2:37</figcaption>
+          <figcaption><b>12-jähriger Junge mit Unruhe, Ängsten, Schlafstörungen …</b>Video · 2:37</figcaption>
         </figure>
       </div>
     </div>
@@ -468,6 +468,22 @@
       tabs.forEach(function(t,k){t.addEventListener('click',function(){stop();show(k)})});
       ['mouseenter','focusin'].forEach(function(ev){th.addEventListener(ev,function(){hold=true})});
       ['mouseleave','focusout'].forEach(function(ev){th.addEventListener(ev,function(){hold=false})});
+    }
+    var rv=document.querySelector('.rv-track');
+    if(rv){
+      var rbt=document.querySelectorAll('.rv-btn');
+      var smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+      var rvUpd=function(){
+        var max=rv.scrollWidth-rv.clientWidth-2;
+        rbt[0].disabled=rv.scrollLeft<=2; rbt[1].disabled=rv.scrollLeft>=max;
+      };
+      rbt.forEach(function(btn){btn.addEventListener('click',function(){
+        var card=rv.querySelector('.rev');
+        var step=card?card.getBoundingClientRect().width+18:rv.clientWidth;
+        rv.scrollBy({left:step*Number(btn.dataset.dir),behavior:smooth});
+      })});
+      rv.addEventListener('scroll',function(){requestAnimationFrame(rvUpd)},{passive:true});
+      window.addEventListener('resize',rvUpd); rvUpd();
     }
   })();
 </script>

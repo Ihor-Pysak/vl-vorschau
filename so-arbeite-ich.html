@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="fonts/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=53408701">
+<link rel="stylesheet" href="assets/site.css?v=abfd0b75">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -299,10 +299,10 @@
     document.querySelectorAll('.video-poster').forEach(function(b){
       b.addEventListener('click',function(){
         var f=document.createElement('iframe');
-        f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.video+'?autoplay=1&rel=0';
+        f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.video+'?autoplay=1&rel=0&playsinline=1';
         f.allow='autoplay; encrypted-media; picture-in-picture';
         f.allowFullscreen=true;
-        f.title='Video: Viktoria Langjahr';
+        f.title=(b.getAttribute('aria-label')||'Video').replace('Video abspielen: ','Video: ');
         b.replaceWith(f);
       });
     });

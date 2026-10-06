@@ -283,3 +283,12 @@
   .kasse h3{font-size:1.2rem}
   .kasse p{margin-top:6px;color:var(--ink-soft)}
   .kasse .roles{margin-top:16px}
+
+  /* video stories */
+  .tv-note{margin-top:14px;text-align:center;font-size:.8rem;color:var(--ink-soft)}
+  .tvid figcaption{line-height:1.45}
+  .vstory{display:grid;grid-template-columns:1fr 280px;gap:clamp(30px,6vw,90px);align-items:center;max-width:900px}
+  .vstory h2{margin-top:6px}
+  .vstory .muted{margin-top:14px}
+  .vstory-media .tvid{max-width:280px;margin:0 auto}
+  @media (max-width:760px){.vstory{grid-template-columns:1fr}.vstory-media .tvid{max-width:250px}}

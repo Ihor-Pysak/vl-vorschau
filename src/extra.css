@@ -333,3 +333,6 @@
   .vstory-2 .vstory-media .tvid{flex:0 0 230px;width:230px;max-width:none;margin:0}
   @media (max-width:900px){.vstory-2{grid-template-columns:1fr}.vstory-2 .tvids{justify-content:flex-start}}
   @media (max-width:760px){.vstory-2 .vstory-media .tvid{flex:0 0 60%;width:auto}}
+
+  /* timeline dots exactly centered on the line (line center = 10px from .tl edge) */
+  .tl-item::before{box-sizing:border-box;left:-26px;transform:translateX(-50%)}

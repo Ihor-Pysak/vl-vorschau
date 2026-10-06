@@ -353,3 +353,4 @@
   .tier-more:focus-visible{outline:3px solid var(--turq);outline-offset:3px;border-radius:4px}
   .tier .tier-more{margin-top:auto}
   .tier .tier-more + .btn{margin-top:14px}
+  .feature-main .ftitle + .tq{margin-top:8px}

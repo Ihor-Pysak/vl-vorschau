@@ -326,3 +326,10 @@
   .video-frame{padding:4px}
   .video-frame .video-poster,.video-frame iframe{border-radius:28px}
   .tier.plus{border-width:1.5px}
+
+  /* two videos next to the story text */
+  .vstory-2{grid-template-columns:1fr auto;max-width:var(--maxw)}
+  .vstory-2 .tvids{margin-top:0;flex-wrap:nowrap}
+  .vstory-2 .vstory-media .tvid{flex:0 0 230px;width:230px;max-width:none;margin:0}
+  @media (max-width:900px){.vstory-2{grid-template-columns:1fr}.vstory-2 .tvids{justify-content:flex-start}}
+  @media (max-width:760px){.vstory-2 .vstory-media .tvid{flex:0 0 60%;width:auto}}

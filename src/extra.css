@@ -414,3 +414,11 @@
   @media (max-width:760px){.fbv.two{grid-template-columns:minmax(0,1fr)}.fbv{gap:16px}}
   .cta-insta{margin-top:26px;font-size:.92rem;opacity:.9}
   .cta-insta a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  /* course pages: "already tried" list inside the pain panel */
+  .nope-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:24px}
+  .nope{display:flex;gap:12px;align-items:flex-start;font-size:.98rem;color:#3d565c}
+  .nope::before{content:"\2715";flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    font-size:.7rem;font-weight:700;margin-top:3px;color:#C2577F;background:rgba(237,159,191,.18);border:1px solid rgba(237,159,191,.45)}
+  .nope b{color:var(--ink);font-weight:600}
+  @media (max-width:760px){.nope-grid{grid-template-columns:1fr}}
+  .offer-note{margin-top:14px;font-size:.92rem;color:var(--ink-soft)}

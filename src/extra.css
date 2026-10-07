@@ -355,3 +355,50 @@
   .tier .tier-more + .btn{margin-top:14px}
   .feature-main .ftitle + .tq{margin-top:8px}
   .akad-more{margin-top:16px}
+
+  /* ===== course info pages (SOS-Elternkurs, Akademie) ===== */
+  .backlink{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;color:#3E6E74;margin-bottom:6px}
+  .backlink:hover{color:var(--ink)}
+  .backlink:focus-visible{outline:3px solid var(--turq);outline-offset:3px;border-radius:4px}
+  .check-list{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+  .tried{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+  .tried-card{padding:24px 22px 26px;border-radius:22px;display:flex;flex-direction:column;gap:8px}
+  .tried-card .tx{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:.9rem;font-weight:700;
+    color:#C2577F;background:rgba(237,159,191,.18);border:1px solid rgba(237,159,191,.45)}
+  .tried-card h3{font-size:1.08rem}
+  .tried-card p{font-size:.92rem;color:var(--ink-soft)}
+  @media (max-width:900px){.tried{grid-template-columns:1fr 1fr}}
+  @media (max-width:520px){.tried{grid-template-columns:1fr}}
+  .benefits{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+  .benefit{padding:16px 20px;border-radius:18px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.92);
+    border-left:3px solid var(--lav)}
+  .benefit h3{font-size:1.05rem}
+  .benefit p{margin-top:4px;font-size:.93rem;color:var(--ink-soft)}
+  .why3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .why3>div{padding:18px 20px;border-radius:18px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.92)}
+  .why3 b{display:block;color:var(--ink);font-size:1.02rem}
+  .why3 p{margin-top:6px;color:var(--ink-soft);font-size:.93rem}
+  @media (max-width:760px){.why3{grid-template-columns:1fr}}
+  .facts-4{grid-template-columns:repeat(4,1fr);margin-top:30px}
+  @media (max-width:760px){.facts-4{grid-template-columns:1fr 1fr}}
+  .tiers.two{grid-template-columns:repeat(2,1fr);max-width:860px;margin-top:30px}
+  @media (max-width:760px){.tiers.two{grid-template-columns:1fr}}
+  .quotes{columns:2;column-gap:18px;margin-top:36px}
+  .quote{break-inside:avoid;margin:0 0 18px;padding:26px 26px 22px;border-radius:22px;position:relative}
+  .quote::before{content:"\201C";position:absolute;right:20px;top:6px;font-family:var(--font-display);font-size:3.6rem;
+    line-height:1;color:rgba(183,166,216,.45)}
+  .quote blockquote{margin:0;font-size:.97rem;line-height:1.65;color:#3d565c}
+  .quote figcaption{margin-top:14px;font-size:.84rem;font-weight:600;color:#3E6E74}
+  @media (max-width:760px){.quotes{columns:1}}
+  .faq-group{margin:18px 0 2px;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#3E6E74}
+  .faq-group:first-child{margin-top:0}
+  .learn{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+  .learn ul{margin:6px 0 0;padding-left:18px;color:#3d565c;font-size:.92rem}
+  .learn li+li{margin-top:4px}
+  @media (max-width:760px){.learn{grid-template-columns:1fr}}
+  .akad-offer{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(24px,4vw,48px);align-items:center;
+    padding:clamp(26px,4vw,46px);border-radius:30px;
+    background:linear-gradient(135deg,rgba(121,191,199,.14),rgba(183,166,216,.12) 55%,rgba(237,159,191,.16)),rgba(255,255,255,.6)}
+  .akad-offer .tprice{font-size:clamp(2.4rem,4.5vw,3.2rem)}
+  @media (max-width:860px){.akad-offer{grid-template-columns:1fr}}
+  .backlink{display:flex;width:fit-content}

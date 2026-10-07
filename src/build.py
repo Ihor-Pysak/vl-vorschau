@@ -31,6 +31,8 @@ ACTIVE = {
     "kurse.html": "kurse.html",
     "ueber-mich.html": "ueber-mich.html",
     "kontakt.html": "kontakt.html",
+    "sos-elternkurs.html": "kurse.html",
+    "akademie.html": "kurse.html",
 }
 
 DESCRIPTIONS = {
@@ -42,6 +44,8 @@ DESCRIPTIONS = {
     "so-arbeite-ich.html": "So arbeite ich: psychoemotionale Begleitung mit Visualisierung und Chirotrance – Ablauf, Sitzungen, Ergebnisse und Kosten auf einen Blick.",
     "kurse.html": "Kurse & Programme: Minikurs und SOS-Elternkurs für Eltern, 1:1-Begleitung „Meine Erfolgsgeschichte“ und Ausbildung in der Akademie.",
     "ueber-mich.html": "Über Viktoria Langjahr: Studium der Sozialen Arbeit, eigene Praxis seit 2018, Akademie seit 2024 – Begleitung auf Deutsch und Russisch.",
+    "sos-elternkurs.html": "SOS-Elternkurs: In 4 Wochen online lernen, wie du dein Kind bei Ängsten und starken Emotionen begleitest – praxiserprobte Methoden, 299 €.",
+    "akademie.html": "Akademie für psycho-emotionale Lösungen: 4-monatiger Zertifikatskurs in lösungsorientierter Kurzzeitbegleitung für Fachpersonen.",
     "kontakt.html": "Kontakt zu Viktoria Langjahr: kostenloses Erstgespräch vereinbaren, Termin buchen oder per WhatsApp, Telefon und E-Mail schreiben.",
 }
 

@@ -402,3 +402,15 @@
   .akad-offer .tprice{font-size:clamp(2.4rem,4.5vw,3.2rem)}
   @media (max-width:860px){.akad-offer{grid-template-columns:1fr}}
   .backlink{display:flex;width:fit-content}
+
+  /* course pages: video testimonials (mixed formats) */
+  .fbv{display:grid;gap:20px;margin-top:38px;align-items:start}
+  .fbv .tvid{width:auto;flex:none}
+  .tvid.wide .tv-poster,.tvid.wide iframe{aspect-ratio:16/9}
+  .fbv.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:940px;margin-left:auto;margin-right:auto}
+  .fbv.three{grid-template-columns:minmax(0,3.16fr) minmax(0,1fr) minmax(0,1fr)}
+  .fbv + .quotes{margin-top:30px}
+  @media (max-width:900px){.fbv.three{grid-template-columns:repeat(2,minmax(0,1fr))}.fbv.three .wide{grid-column:1/-1}.fbv.three .tvid:not(.wide){width:100%;max-width:260px;justify-self:center}}
+  @media (max-width:760px){.fbv.two{grid-template-columns:minmax(0,1fr)}.fbv{gap:16px}}
+  .cta-insta{margin-top:26px;font-size:.92rem;opacity:.9}
+  .cta-insta a{color:inherit;text-decoration:underline;text-underline-offset:3px}

@@ -16,7 +16,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=edbed2bc">
+<link rel="stylesheet" href="assets/site.css?v=ed708872">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -334,6 +334,25 @@
     if(rv){
       var rbt=document.querySelectorAll('.rv-btn');
       var smooth=matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth';
+      rv.querySelectorAll('.rev:not(.rev-all) p').forEach(function(p){
+        var card=p.parentNode, b=document.createElement('button');
+        b.type='button'; b.className='rev-more'; b.setAttribute('aria-expanded','false');
+        b.innerHTML='<span>Weiterlesen</span><i aria-hidden="true"></i>';
+        b.addEventListener('click',function(){
+          var open=card.classList.toggle('open');
+          b.setAttribute('aria-expanded',open); b.firstChild.textContent=open?'Weniger anzeigen':'Weiterlesen';
+        });
+        card.appendChild(b);
+      });
+      var rvFit=function(){
+        rv.querySelectorAll('.rev:not(.rev-all):not(.open)').forEach(function(c){
+          var p=c.querySelector('p'); c.classList.toggle('fits',p.scrollHeight<=p.clientHeight+2);
+        });
+        var ra=rv.querySelector('.rev-all'), ref=rv.querySelector('.rev:not(.rev-all):not(.open)');
+        if(ra&&ref)ra.style.minHeight=ref.offsetHeight+'px';
+      };
+      window.addEventListener('resize',rvFit); rvFit();
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(rvFit);
       var rvUpd=function(){
         var max=rv.scrollWidth-rv.clientWidth-2;
         rbt[0].disabled=rv.scrollLeft<=2; rbt[1].disabled=rv.scrollLeft>=max;

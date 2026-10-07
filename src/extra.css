@@ -446,3 +446,17 @@ a.rating-badge{white-space:nowrap}
   a.rating-badge .stars{letter-spacing:1px;font-size:.86rem}
   .rv-all .btn{font-size:.95rem}
 }
+/* google reviews: equal cards, long texts open on click */
+.rv-track .rev p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;line-height:1.65;min-height:9.9em}
+.rv-track .rev.open p{display:block;-webkit-line-clamp:none;overflow:visible}
+.rev-more{position:absolute;left:24px;bottom:14px;display:inline-flex;align-items:center;gap:8px;padding:4px 0;border:0;background:none;
+  font:inherit;font-size:.86rem;font-weight:600;color:#3E6E74;cursor:pointer}
+.rev-more i{width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:translateY(-2px) rotate(45deg);transition:transform .2s ease}
+.rev.open .rev-more i{transform:translateY(1px) rotate(-135deg)}
+.rev-more:hover span{text-decoration:underline;text-underline-offset:3px}
+.rev-more:focus-visible{outline:3px solid var(--turq);outline-offset:3px;border-radius:6px}
+.rev.fits .rev-more{display:none}
+.rv-track .rev:not(.rev-all){padding-bottom:52px}
+.rv-track .rev::before{bottom:-16px}
+.rev-more{bottom:16px}

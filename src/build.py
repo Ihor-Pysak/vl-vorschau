@@ -21,6 +21,11 @@ SRC = pathlib.Path(__file__).resolve().parent
 OUT = SRC.parent
 SITE_URL = "https://ihor-pysak.github.io/vl-vorschau/"
 
+# Google reviews: total count (update when it grows) and link to the Google profile
+GREV_N = 88
+GREV_SHOWN = 9  # reviews shown in the homepage carousel
+GREV_URL = "https://www.google.com/maps/place/?q=place_id:ChIJ_x-FKCCtvkcRNsNl3Y-eKMc"
+
 # coaching subpages highlight the "Coaching" top-level menu link
 ACTIVE = {
     "coaching-kinder.html": "coaching-kinder.html",
@@ -221,6 +226,8 @@ def build():
             return f"assets/{src.name}"
 
         page = re.sub(r"__IMG_([A-Za-z0-9-]+)__", resolve, page)
+        page = (page.replace("__GREV_URL__", GREV_URL).replace("__GREV_N__", str(GREV_N))
+                .replace("__GREV_MORE__", str(GREV_N - GREV_SHOWN)))
         left = re.findall(r"__[A-Z][A-Z_0-9]*__", page)
         if left:
             raise SystemExit(f"{name}: unresolved placeholders {left}")

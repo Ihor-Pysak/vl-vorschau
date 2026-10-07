@@ -421,3 +421,28 @@
   .nope b{color:var(--ink);font-weight:600}
   @media (max-width:760px){.nope-grid{grid-template-columns:1fr}}
   .offer-note{margin-top:14px;font-size:.92rem;color:var(--ink-soft)}
+/* google reviews: total count + links to all reviews on Google */
+a.rating-badge{color:var(--ink);transition:transform .18s ease,box-shadow .18s ease}
+a.rating-badge:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+a.rating-badge .arw{transition:transform .18s ease}
+a.rating-badge:hover .arw{transform:translateX(3px)}
+.vstory .rating-badge{margin-top:20px}
+.vstory .rating-badge + .btns{margin-top:18px !important}
+.rv-all{display:flex;justify-content:center;margin-top:10px}
+.quotes + .rv-all .rating-badge{margin-top:8px}
+.rv-track .rev-all{align-self:flex-start;min-height:320px;align-items:center;justify-content:center;text-align:center;gap:8px;padding:28px 24px;color:var(--ink);
+  transition:transform .18s ease}
+.rev-all::before{content:none}
+.rev-all:hover{transform:translateY(-3px)}
+.ra-num{font-family:var(--font-display);font-size:3.2rem;font-weight:600;line-height:1;
+  background:var(--wing-deep);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ra-txt{font-weight:600;font-size:1.02rem}
+.ra-go{margin-top:6px;font-size:.92rem;font-weight:600;color:#3E6E74}
+.ra-go .arw{display:inline-block;transition:transform .18s ease}
+.rev-all:hover .ra-go .arw{transform:translateX(3px)}
+a.rating-badge{white-space:nowrap}
+@media (max-width:420px){
+  a.rating-badge{font-size:.84rem;gap:7px;padding:.55em 1em}
+  a.rating-badge .stars{letter-spacing:1px;font-size:.86rem}
+  .rv-all .btn{font-size:.95rem}
+}

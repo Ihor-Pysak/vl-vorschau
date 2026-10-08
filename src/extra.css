@@ -460,3 +460,6 @@ a.rating-badge{white-space:nowrap}
 .rv-track .rev:not(.rev-all){padding-bottom:52px}
 .rv-track .rev::before{bottom:-16px}
 .rev-more{bottom:16px}
+/* akademie: price & start date on request */
+.ak-ask{margin-top:12px;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.2}
+.ak-ask-txt{margin-top:12px;color:var(--ink-soft);max-width:520px}

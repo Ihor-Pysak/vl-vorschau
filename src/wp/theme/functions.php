@@ -25,6 +25,26 @@ const VL_PAGES = array(
 	'datenschutzerklarung'                 => 'datenschutzerklarung',
 );
 
+// old Russian site (ru.viktoria-langjahr.de): page slug => page on the German site
+const VL_RU_PATHS = array(
+	'kouching-dlya-detej-i-podrostkov' => '/coaching-fuer-kinder-und-jugendliche/',
+	'kouching-dlya-roditelej'          => '/coaching-fuer-eltern/',
+	'kouching-dlya-par'                => '/coaching-fuer-paare/',
+	'pro-menya'                        => '/ueber-mich/',
+	'akademiya'                        => '/akademie/',
+	'mentorstvo'                       => '/kurse/',
+	'informacziya'                     => '/so-arbeite-ich/',
+	'bronirovanie-onlajn'              => '/onlinereservierung/',
+	'impressum'                        => '/impressum/',
+	'datenschutzerklarung'             => '/datenschutzerklarung/',
+	'blog'                             => '/blog/',
+	'2022/04/25'                       => '/2022/04/25/konzentrationsprobleme-amelies-geschichte/',
+	'2022/05/18'                       => '/2022/05/18/aggression-simons-geschichte/',
+	'2022/06/11'                       => '/2022/06/11/nervoese-ticks-die-geschichte-von-allesandro/',
+	'2022/10/22'                       => '/2022/10/22/angst-vor-dem-alleinsein-und-vor-ohnmacht/',
+	'2022/12/02'                       => '/2022/12/02/praxisgeschichte-eines-paares/',
+);
+
 // IndexNow key (Bing and others): served as /<key>.txt, used to announce updated URLs
 const VL_INDEXNOW_KEY = 'cbc496af89673c87a91a4c9feaac26b6';
 
@@ -89,6 +109,42 @@ function vl_blog_url() {
 	$id = (int) get_option( 'page_for_posts' );
 	return $id ? get_permalink( $id ) : home_url( '/' );
 }
+
+/**
+ * Other host names of the web space (www, ru, old, test, ...) can point to this WordPress.
+ * Send every such request to the same page on the main domain; old Russian pages go to
+ * their German counterparts.
+ */
+add_action(
+	'init',
+	function () {
+		if ( ( defined( 'WP_CLI' ) && WP_CLI ) || wp_doing_cron() || empty( $_SERVER['HTTP_HOST'] ) ) {
+			return;
+		}
+		$main = wp_parse_url( home_url(), PHP_URL_HOST );
+		$host = strtolower( preg_replace( '/:\d+$/', '', wp_unslash( $_SERVER['HTTP_HOST'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		if ( ! $main || $host === $main ) {
+			return;
+		}
+		$uri  = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$path = (string) wp_parse_url( $uri, PHP_URL_PATH );
+		if ( 0 === strpos( $host, 'ru.' ) ) {
+			$key    = trim( $path, '/' );
+			$target = '/';
+			foreach ( VL_RU_PATHS as $from => $to ) {
+				if ( $key === $from || 0 === strpos( $key, $from . '/' ) ) {
+					$target = $to;
+					break;
+				}
+			}
+		} else {
+			$target = '' === $path ? '/' : $path;
+		}
+		wp_redirect( home_url( $target ), 301, 'Viktoria Langjahr' ); // phpcs:ignore WordPress.Security.SafeRedirect
+		exit;
+	},
+	0
+);
 
 // llms.txt for AI assistants, redirects of removed pages
 add_action(

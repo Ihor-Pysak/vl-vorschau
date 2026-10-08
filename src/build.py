@@ -11,11 +11,14 @@ Output (repo root): one HTML file per page, assets/site.css (shared, cached),
 fonts/, and responsive WebP images in assets/.
 """
 import hashlib
+import html
 import pathlib
 import re
 import shutil
 
 from PIL import Image
+
+import seo
 
 SRC = pathlib.Path(__file__).resolve().parent
 OUT = SRC.parent
@@ -38,20 +41,6 @@ ACTIVE = {
     "kontakt.html": "kontakt.html",
     "sos-elternkurs.html": "kurse.html",
     "akademie.html": "kurse.html",
-}
-
-DESCRIPTIONS = {
-    "index.html": "Psychoemotionale Begleitung für Kinder, Jugendliche und Erwachsene: Viktoria Langjahr hilft bei Ängsten, Stress und emotionalen Belastungen – vor Ort und online.",
-    "coaching-kinder.html": "Coaching für Kinder & Jugendliche: spielerisch mit Bildern, Gefühlen und Vorstellungskraft bei Ängsten, starken Emotionen und Schulproblemen.",
-    "coaching-eltern.html": "Coaching für Eltern: Wenn dein Kind keine Hilfe möchte, beginnen wir bei dir – für mehr Ruhe, Sicherheit und Verbindung in der Familie.",
-    "coaching-paare.html": "Paar-Coaching: verstehen, was hinter euren Konflikten liegt – für wieder mehr Nähe, Verständnis und Verbindung. Kostenloses Erstgespräch.",
-    "coaching-erwachsene.html": "Coaching für Erwachsene bei Ängsten, Panik, innerer Unruhe und Selbstzweifeln – wir verändern dein emotionales Erleben.",
-    "so-arbeite-ich.html": "So arbeite ich: psychoemotionale Begleitung mit Visualisierung und Chirotrance – Ablauf, Sitzungen, Ergebnisse und Kosten auf einen Blick.",
-    "kurse.html": "Kurse & Programme: Minikurs und SOS-Elternkurs für Eltern, 1:1-Begleitung „Meine Erfolgsgeschichte“ und Ausbildung in der Akademie.",
-    "ueber-mich.html": "Über Viktoria Langjahr: Studium der Sozialen Arbeit, eigene Praxis seit 2018, Akademie seit 2024 – Begleitung auf Deutsch und Russisch.",
-    "sos-elternkurs.html": "SOS-Elternkurs: In 4 Wochen online lernen, wie du dein Kind bei Ängsten und starken Emotionen begleitest – praxiserprobte Methoden, 299 €.",
-    "akademie.html": "Akademie für psycho-emotionale Lösungen: 4-monatiger Zertifikatskurs in lösungsorientierter Kurzzeitbegleitung für Fachpersonen.",
-    "kontakt.html": "Kontakt zu Viktoria Langjahr: kostenloses Erstgespräch vereinbaren, Termin buchen oder per WhatsApp, Telefon und E-Mail schreiben.",
 }
 
 IMG_SIZES = "(max-width: 900px) 92vw, 560px"
@@ -140,7 +129,7 @@ def rewrite_imgs(html, info):
         attrs = re.sub(r'\s*src="[^"]*"', "", tag[4:-1]).strip()
         if d["logo"]:
             in_header = m.start() < main_start
-            load = 'fetchpriority="high"' if in_header else 'loading="lazy" decoding="async"'
+            load = 'decoding="async"' if in_header else 'loading="lazy" decoding="async"'
             return f'<img src="assets/{d["src"]}" width="{d["w"]}" height="{d["h"]}" {load} {attrs}>'
         biggest = d["variants"][-1][1]
         srcset = ", ".join(f"assets/{n} {vw}w" for vw, n in d["variants"])
@@ -186,22 +175,33 @@ def build():
     head, rest = shell.split('<main id="top">', 1)
     _, foot = rest.split("</main>", 1)
 
+    site = seo.Site(SITE_URL)
+    (OUT / "llms.txt").write_text(site.llms_txt())
+
     for frag in sorted((SRC / "pages").glob("*.html")):
         name = frag.name
         body = frag.read_text()
         tm = re.match(r"<!--TITLE:(.*?)-->\s*", body, re.S)
-        title = tm.group(1) if tm else "Viktoria Langjahr"
         body = body[tm.end():] if tm else body
-        desc = DESCRIPTIONS.get(name, DESCRIPTIONS["index.html"])
+        title = html.escape(seo.TITLES[name])
+        desc = html.escape(seo.DESCRIPTIONS[name])
 
         head_assets = "\n".join([
             f'<meta name="description" content="{desc}">',
+            *(['<meta name="robots" content="noindex">'] if seo.PREVIEW else
+              [f'<link rel="canonical" href="{site.url(name)}">']),
             '<meta name="theme-color" content="#F8F5F9">',
             '<meta property="og:type" content="website">',
             '<meta property="og:locale" content="de_DE">',
             f'<meta property="og:title" content="{title}">',
             f'<meta property="og:description" content="{desc}">',
+            '<meta property="og:site_name" content="Viktoria Langjahr">',
             f'<meta property="og:image" content="{SITE_URL}assets/og.jpg">',
+            '<meta property="og:image:width" content="1200">',
+            '<meta property="og:image:height" content="630">',
+            '<meta property="og:image:alt" content="Viktoria Langjahr – Psychoemotionale Begleitung">',
+            '<meta name="twitter:card" content="summary_large_image">',
+            '<!--JSONLD-->',
             f'<meta property="og:url" content="{SITE_URL}{"" if name == "index.html" else name}">',
             '<link rel="icon" href="assets/favicon.png" type="image/png">',
             '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">',
@@ -232,6 +232,7 @@ def build():
         if left:
             raise SystemExit(f"{name}: unresolved placeholders {left}")
         page = rewrite_imgs(page, info)
+        page = page.replace("<!--JSONLD-->", site.graph(name, page), 1)
         (OUT / name).write_text(page)
         print(f"{name:28} {len(page) // 1024:>4} KB")
 

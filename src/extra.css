@@ -463,3 +463,9 @@ a.rating-badge{white-space:nowrap}
 /* akademie: price & start date on request */
 .ak-ask{margin-top:12px;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.2}
 .ak-ask-txt{margin-top:12px;color:var(--ink-soft);max-width:520px}
+@media (max-width:374px){
+  a.rating-badge{white-space:normal;max-width:100%;font-size:.8rem;padding:.55em .9em;line-height:1.35}
+  a.rating-badge .stars{font-size:.8rem;letter-spacing:0;flex:none}
+}
+/* first screen is visible immediately (no scroll reveal): faster first paint / LCP */
+.js main > section:first-child .rev-up{opacity:1;transform:none;transition:none}

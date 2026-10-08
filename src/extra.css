@@ -548,3 +548,9 @@ a.rating-badge{white-space:nowrap}
   .booking-cal .tbk-btn{height:auto!important;border-radius:999px!important;padding:.65em 1.4em!important;font-weight:600!important;box-shadow:none!important}
   .booking-cal .tbk-btn-primary{background:var(--wing-deep)!important;border:0!important;color:#fff!important}
   .booking-cal .tbk-btn-default{background:rgba(255,255,255,.85)!important;border:1.5px solid rgba(121,191,199,.45)!important;color:var(--ink)!important}
+  .booking-cal .react-tel-input .special-label{display:none}
+  .booking-cal .react-tel-input .form-control{width:100%!important;height:44px!important;border-radius:12px!important;border:1.5px solid rgba(121,191,199,.45)!important;font-family:var(--font-body)!important;font-size:.95rem!important;color:var(--ink)!important;box-shadow:none!important}
+  .booking-cal .react-tel-input .form-control:focus{border-color:#79BFC7!important}
+  .booking-cal .react-tel-input .flag-dropdown{background:transparent!important;border:0!important}
+  .booking-cal .react-tel-input .selected-flag{border-radius:12px 0 0 12px!important;padding-left:12px!important}
+  .booking-cal .react-tel-input .selected-flag:hover,.booking-cal .react-tel-input .flag-dropdown.open .selected-flag{background:rgba(121,191,199,.12)!important}

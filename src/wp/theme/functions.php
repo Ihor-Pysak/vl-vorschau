@@ -198,6 +198,40 @@ add_filter(
 	}
 );
 
+/**
+ * TheBooking: in emails, choice fields (select/radio) always showed "Nicht ausgewählt".
+ * The plugin looks up $option['value'], but the options of this form only have a label
+ * (created with an older plugin version). Fill in the label of the chosen option instead.
+ */
+add_filter(
+	'tbk_notification_templates',
+	function ( $values, $reservation_id ) {
+		if ( ! is_array( $values ) || ! class_exists( '\VSHM\Providers\FormEntries' ) || ! class_exists( '\VSHM\Providers\FormFields' ) ) {
+			return $values;
+		}
+		try {
+			foreach ( (array) \VSHM\Providers\FormEntries::provideBy( array( 'reservationId' => $reservation_id ) ) as $entry ) {
+				if ( ! is_array( $entry ) || ! isset( $entry['id'], $entry['value'] ) ) {
+					continue;
+				}
+				$field = \VSHM\Providers\FormFields::provideBy( array( 'id' => $entry['id'] ), true );
+				if ( ! is_array( $field ) || ! in_array( $field['type'] ?? '', array( 'select', 'radio' ), true ) || empty( $field['hook'] ) ) {
+					continue;
+				}
+				$option = $field['data']['options'][ $entry['value'] ] ?? null;
+				if ( is_array( $option ) && empty( $option['value'] ) && ! empty( $option['label'] ) ) {
+					$values[ $field['hook'] ] = $option['label'];
+				}
+			}
+		} catch ( \Throwable $e ) {
+			return $values;
+		}
+		return $values;
+	},
+	20,
+	2
+);
+
 // no share buttons from AddToAny in blog posts
 add_filter( 'addtoany_sharing_disabled', '__return_true' );
 

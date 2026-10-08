@@ -1,0 +1,208 @@
+<?php
+/**
+ * Theme "Viktoria Langjahr".
+ *
+ * The main pages are built outside WordPress (src/build.py) and shipped in
+ * pages/*.html; vl-static.php prints them. Blog posts, the blog index and any
+ * other WordPress page use the same header and footer (parts/generic.html).
+ */
+defined( 'ABSPATH' ) || exit;
+
+// WordPress page slug => prebuilt page (pages/<key>.html)
+const VL_PAGES = array(
+	'coaching-fuer-kinder-und-jugendliche' => 'coaching-kinder',
+	'coaching-fuer-eltern'                 => 'coaching-eltern',
+	'coaching-fuer-paare'                  => 'coaching-paare',
+	'coaching-fuer-erwachsene'             => 'coaching-erwachsene',
+	'so-arbeite-ich'                       => 'so-arbeite-ich',
+	'kurse'                                => 'kurse',
+	'ueber-mich'                           => 'ueber-mich',
+	'sos-elternkurs'                       => 'sos-elternkurs',
+	'akademie'                             => 'akademie',
+	'kontakt'                              => 'kontakt',
+	'onlinereservierung'                   => 'onlinereservierung',
+	'impressum'                            => 'impressum',
+	'datenschutzerklarung'                 => 'datenschutzerklarung',
+);
+
+// pages of the old site that no longer exist
+const VL_REDIRECTS = array(
+	'coaching'      => '/',
+	'mentoring'     => '/kurse/',
+	'informationen' => '/so-arbeite-ich/',
+);
+
+// plugins whose scripts and styles a prebuilt page may load; everything else is dropped
+const VL_PLUGIN_ASSETS = array(
+	'onlinereservierung' => array( 'team-booking' ),
+	'kontakt'            => array( 'contact-form-7', 'honeypot' ),
+);
+
+// Contact Form 7: no automatic <p>/<br> in the form markup
+add_filter( 'wpcf7_autop_or_not', '__return_false' );
+
+add_action(
+	'after_setup_theme',
+	function () {
+		add_theme_support( 'title-tag' );
+		add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
+
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		remove_action( 'wp_head', 'wp_generator' );
+		remove_action( 'wp_head', 'rsd_link' );
+		remove_action( 'wp_head', 'wlwmanifest_link' );
+		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+		remove_action( 'wp_head', 'rest_output_link_wp_head' );
+		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+		remove_action( 'wp_head', 'feed_links_extra', 3 );
+	}
+);
+
+/**
+ * Key of the prebuilt page for the current request, or null.
+ */
+function vl_key() {
+	if ( is_front_page() ) {
+		$key = 'index';
+	} elseif ( is_page() ) {
+		$slug = get_post_field( 'post_name', get_queried_object_id() );
+		$key  = isset( VL_PAGES[ $slug ] ) ? VL_PAGES[ $slug ] : null;
+	} else {
+		$key = null;
+	}
+	if ( $key && ! file_exists( get_theme_file_path( 'pages/' . $key . '.html' ) ) ) {
+		$key = null;
+	}
+	return $key;
+}
+
+function vl_body_class_attr() {
+	return is_admin_bar_showing() ? ' class="admin-bar"' : '';
+}
+
+function vl_blog_url() {
+	$id = (int) get_option( 'page_for_posts' );
+	return $id ? get_permalink( $id ) : home_url( '/' );
+}
+
+// llms.txt for AI assistants, redirects of removed pages
+add_action(
+	'template_redirect',
+	function () {
+		$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		if ( 'llms.txt' === $path ) {
+			status_header( 200 );
+			header( 'Content-Type: text/plain; charset=utf-8' );
+			readfile( get_theme_file_path( 'llms.txt' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+			exit;
+		}
+		if ( isset( VL_REDIRECTS[ $path ] ) ) {
+			wp_safe_redirect( home_url( VL_REDIRECTS[ $path ] ), 301 );
+			exit;
+		}
+	},
+	0
+);
+
+// prebuilt pages bring their own title, meta tags and structured data
+add_action(
+	'template_redirect',
+	function () {
+		if ( ! vl_key() ) {
+			return;
+		}
+		add_filter( 'wpseo_frontend_presenters', '__return_empty_array' );
+		add_filter( 'wpseo_json_ld_output', '__return_false' );
+		add_filter( 'wpseo_debug_markers', '__return_false' );
+		remove_action( 'wp_head', '_wp_render_title_tag', 1 );
+		remove_action( 'wp_head', 'rel_canonical' );
+	},
+	20
+);
+
+add_filter(
+	'template_include',
+	function ( $template ) {
+		return vl_key() ? get_theme_file_path( 'vl-static.php' ) : $template;
+	},
+	99
+);
+
+/**
+ * Drop the scripts and styles of the old theme, Elementor and other plugins;
+ * the site has its own stylesheet. Only the admin bar and the plugins listed in
+ * VL_PLUGIN_ASSETS for the current page are kept.
+ */
+function vl_trim_assets() {
+	if ( is_admin() ) {
+		return;
+	}
+	$key     = vl_key();
+	$plugins = ( $key && isset( VL_PLUGIN_ASSETS[ $key ] ) ) ? VL_PLUGIN_ASSETS[ $key ] : array();
+	$keep    = array( 'admin-bar', 'dashicons' );
+	foreach ( array( wp_styles(), wp_scripts() ) as $reg ) {
+		foreach ( (array) $reg->queue as $handle ) {
+			if ( in_array( $handle, $keep, true ) ) {
+				continue;
+			}
+			$src = isset( $reg->registered[ $handle ] ) ? (string) $reg->registered[ $handle ]->src : '';
+			$ok  = false;
+			foreach ( $plugins as $p ) {
+				if ( '' !== $src && false !== strpos( $src, '/plugins/' . $p . '/' ) ) {
+					$ok = true;
+				}
+			}
+			if ( ! $ok ) {
+				$reg->dequeue( $handle );
+			}
+		}
+	}
+}
+add_action( 'wp_enqueue_scripts', 'vl_trim_assets', PHP_INT_MAX );
+add_action( 'wp_print_styles', 'vl_trim_assets', PHP_INT_MAX );
+add_action( 'wp_print_footer_scripts', 'vl_trim_assets', 1 );
+
+// no share buttons from AddToAny in blog posts
+add_filter( 'addtoany_sharing_disabled', '__return_true' );
+
+/**
+ * Prints a WordPress page in the site layout (parts/generic.html).
+ *
+ * @param callable $content Prints the content of <main>.
+ */
+function vl_generic( callable $content ) {
+	$tpl = file_get_contents( get_theme_file_path( 'parts/generic.html' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+	list( $top, $bottom ) = explode( '<!--CONTENT-->', $tpl, 2 );
+
+	ob_start();
+	wp_head();
+	$head = ob_get_clean();
+	echo str_replace( array( '<!--WP_HEAD-->', '<body>' ), array( $head, '<body' . vl_body_class_attr() . '>' ), $top ); // phpcs:ignore WordPress.Security.EscapeOutput
+
+	$content();
+
+	ob_start();
+	wp_footer();
+	$foot = ob_get_clean();
+	echo str_replace( '<!--WP_FOOTER-->', $foot, $bottom ); // phpcs:ignore WordPress.Security.EscapeOutput
+}
+
+// editing a page in the admin has no effect when the theme renders it: say so
+add_action(
+	'admin_notices',
+	function () {
+		$screen = get_current_screen();
+		if ( ! $screen || 'page' !== $screen->post_type || 'post' !== $screen->base ) {
+			return;
+		}
+		$post = get_post();
+		if ( ! $post ) {
+			return;
+		}
+		$front = (int) get_option( 'page_on_front' ) === (int) $post->ID;
+		if ( $front || isset( VL_PAGES[ $post->post_name ] ) ) {
+			echo '<div class="notice notice-info"><p><strong>Hinweis:</strong> Der Inhalt dieser Seite kommt aus dem Theme „Viktoria Langjahr“. Änderungen hier im Editor werden auf der Website nicht angezeigt.</p></div>';
+		}
+	}
+);

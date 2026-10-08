@@ -477,3 +477,50 @@ a.rating-badge{white-space:nowrap}
   .facts-3{grid-template-columns:repeat(3,1fr);margin-top:30px}
   @media (max-width:520px){.facts-3{gap:8px}.facts-3 .fact{padding:14px 12px 12px}.facts-3 .fact .fn{font-size:1.35rem}.facts-3 .fact .fl{font-size:.8rem}}
   @media (max-width:374px){.facts-3{grid-template-columns:1fr 1fr}.facts-3 .fact:last-child{grid-column:1/-1}}
+  /* ---- WordPress: admin bar, legal pages, blog, booking, contact form (CF7) ---- */
+  .admin-bar header.site{top:32px}
+  @media (max-width:782px){.admin-bar header.site{top:46px}}
+  @media (max-width:600px){.admin-bar header.site{top:0}}
+  .legal{margin-top:34px;padding:clamp(22px,4vw,44px);border-radius:24px;max-width:860px}
+  .prose{color:var(--ink-soft);line-height:1.75;overflow-wrap:anywhere}
+  .prose h2{font-size:clamp(1.25rem,2.2vw,1.55rem);color:var(--ink);margin:1.7em 0 .5em;line-height:1.25}
+  .prose h3{font-size:1.08rem;color:var(--ink);margin:1.4em 0 .4em;line-height:1.3}
+  .prose > :first-child{margin-top:0}
+  .prose p{margin:0 0 1em}
+  .prose ul,.prose ol{margin:0 0 1em;padding-left:1.3em}
+  .prose li{margin:.25em 0}
+  .prose a{color:#3E6E74;text-decoration:underline;text-underline-offset:3px}
+  .prose strong,.prose b{color:var(--ink)}
+  .post-list{display:grid;gap:18px;margin-top:34px;max-width:860px}
+  .post-card{padding:24px 26px;border-radius:22px}
+  .post-card h2{font-size:clamp(1.2rem,2vw,1.45rem);margin:4px 0 8px}
+  .post-card h2 a:hover{color:#3E6E74}
+  .post-date{font-size:.82rem;color:var(--ink-soft);letter-spacing:.02em}
+  .post-body{margin-top:30px;padding:clamp(22px,4vw,40px);border-radius:24px;max-width:860px}
+  .post-back{margin-top:26px}
+  .nav-links{display:flex;gap:10px;margin-top:20px}
+  .nav-links .page-numbers{padding:.4em .8em;border-radius:10px;background:var(--glass-strong)}
+  .nav-links .current{background:var(--ink);color:#fff}
+  .booking{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:26px;margin-top:36px;align-items:start}
+  @media (max-width:900px){.booking{grid-template-columns:1fr}}
+  .booking-cal{padding:clamp(14px,2.5vw,26px);border-radius:24px;min-height:360px}
+  .booking-info{padding:6px 4px}
+  .booking-info h2{font-size:1.35rem}
+  .booking-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px}
+  .booking-list li{position:relative;padding-left:22px;color:var(--ink-soft);line-height:1.6}
+  .booking-list li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--wing-deep)}
+  .booking-list b{color:var(--ink)}
+  .booking-new{margin-top:22px;padding:20px 22px;border-radius:20px;background:var(--glass-strong);border:1px solid rgba(255,255,255,.9)}
+  .booking-new p{color:var(--ink-soft);margin-bottom:14px;line-height:1.6}
+  .booking-new b{color:var(--ink)}
+  .wpcf7-form-control-wrap{display:block}
+  .form .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-acceptance){width:100%}
+  .form .wpcf7-acceptance{font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+  .form .wpcf7-acceptance input{margin-right:8px;accent-color:#3E6E74}
+  .form .wpcf7-acceptance a{color:#3E6E74;text-decoration:underline}
+  .form .wpcf7-submit{border:0;cursor:pointer}
+  .wpcf7-not-valid-tip{display:block;margin-top:6px;font-size:.84rem;color:#B4466B}
+  .wpcf7-spinner{margin:0 0 0 10px}
+  .wpcf7 form .wpcf7-response-output{margin:4px 0 0;padding:12px 16px;border-radius:14px;font-size:.92rem;border:1.5px solid var(--turq);background:rgba(255,255,255,.7)}
+  .wpcf7 form.invalid .wpcf7-response-output,.wpcf7 form.failed .wpcf7-response-output{border-color:#ED9FBF}
+  .screen-reader-response{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}

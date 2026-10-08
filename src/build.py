@@ -1,20 +1,33 @@
 #!/usr/bin/env python3
-"""Build the preview site.
+"""Build the site.
+
+    python3 src/build.py        preview for GitHub Pages (repo root)
+    python3 src/build.py wp     WordPress theme for viktoria-langjahr.de (../wp-dist/)
 
 src/shell.html      head, styles, header, footer (taken from the homepage)
 src/extra.css       additional component styles
 src/fonts/          self-hosted woff2 files + fonts.css
 src/pages/*.html    page bodies (<main> content); first line <!--TITLE:...-->
+src/wp/pages/       WordPress-only pages (booking, legal pages)
+src/wp/theme/       PHP templates of the WordPress theme
 src/assets/img_*.*  source images, referenced in pages as __IMG_<key>__
 
-Output (repo root): one HTML file per page, assets/site.css (shared, cached),
-fonts/, and responsive WebP images in assets/.
+Preview output (repo root): one HTML file per page, assets/site.css (shared,
+cached), fonts/, and responsive WebP images in assets/.
+
+WordPress output (../wp-dist/viktoria/ + viktoria.zip): the same pages with
+WordPress URLs in pages/, the generic shell for blog and other WordPress pages
+in parts/generic.html, plus assets/, fonts/, llms.txt and the PHP templates.
+It is built outside the repo because the repo is published on GitHub Pages.
 """
 import hashlib
 import html
 import pathlib
 import re
 import shutil
+import sys
+import zipfile
+from dataclasses import dataclass, field
 
 from PIL import Image
 
@@ -23,6 +36,31 @@ import seo
 SRC = pathlib.Path(__file__).resolve().parent
 OUT = SRC.parent
 SITE_URL = "https://ihor-pysak.github.io/vl-vorschau/"
+
+# WordPress theme
+WP_URL = "https://viktoria-langjahr.de/"
+WP_THEME = "viktoria"
+WP_ASSETS = f"/wp-content/themes/{WP_THEME}/"
+WP_DIST = SRC.parent.parent / "wp-dist"
+# page file -> WordPress path; the coaching pages keep the slugs of the old site
+WP_PATHS = {
+    "index.html": "",
+    "coaching-kinder.html": "coaching-fuer-kinder-und-jugendliche/",
+    "coaching-eltern.html": "coaching-fuer-eltern/",
+    "coaching-paare.html": "coaching-fuer-paare/",
+    "coaching-erwachsene.html": "coaching-fuer-erwachsene/",
+    "so-arbeite-ich.html": "so-arbeite-ich/",
+    "kurse.html": "kurse/",
+    "ueber-mich.html": "ueber-mich/",
+    "sos-elternkurs.html": "sos-elternkurs/",
+    "akademie.html": "akademie/",
+    "kontakt.html": "kontakt/",
+    "onlinereservierung.html": "onlinereservierung/",
+    "impressum.html": "impressum/",
+    "datenschutzerklarung.html": "datenschutzerklarung/",
+}
+# Contact Form 7 form that replaces the static form on the contact page
+WP_CONTACT_FORM = '[contact-form-7 title="Kontaktformular Website" html_class="form"]'
 
 # Google reviews: total count (update when it grows) and link to the Google profile
 GREV_N = 88
@@ -45,6 +83,16 @@ ACTIVE = {
 
 IMG_SIZES = "(max-width: 900px) 92vw, 560px"
 LOGO_W = 280
+
+
+@dataclass
+class Target:
+    out: pathlib.Path          # where assets/ and fonts/ go
+    pages_out: pathlib.Path    # where the page files go
+    site: seo.Site
+    preview: bool
+    wp: bool = False
+    page_dirs: list = field(default_factory=lambda: [SRC / "pages"])
 
 
 def minify_css(css):
@@ -145,7 +193,73 @@ def rewrite_imgs(html, info):
     return re.sub(r"<img\b[^>]*>", rep, html)
 
 
-def build():
+def resolve_placeholders(page, name):
+    def resolve(mm):
+        key = mm.group(1)
+        src = next((SRC / "assets").glob(f"img_{key}.*"), None)
+        if src is None:
+            raise SystemExit(f"{name}: no asset for __IMG_{key}__")
+        return f"assets/{src.name}"
+
+    page = re.sub(r"__IMG_([A-Za-z0-9-]+)__", resolve, page)
+    page = (page.replace("__GREV_URL__", GREV_URL).replace("__GREV_N__", str(GREV_N))
+            .replace("__GREV_MORE__", str(GREV_N - GREV_SHOWN)))
+    left = re.findall(r"__[A-Z][A-Z_0-9]*__", page)
+    if left:
+        raise SystemExit(f"{name}: unresolved placeholders {left}")
+    return page
+
+
+def wp_rewrite(page, name):
+    """Preview links and asset paths -> WordPress URLs; hooks for wp_head/wp_footer."""
+    names = "|".join(re.escape(n[:-5]) for n in WP_PATHS)
+    page = re.sub(rf'href="({names})\.html(#[^"]*)?"',
+                  lambda m: f'href="/{WP_PATHS[m.group(1) + ".html"]}{m.group(2) or ""}"', page)
+    # links to the own domain become relative (the canonical link stays absolute)
+    page = re.sub(r'(?<!rel="canonical" )href="https://viktoria-langjahr\.de/', 'href="/', page)
+    page = re.sub(r"(?<=[\s\"',(])(assets|fonts)/", lambda m: WP_ASSETS + m.group(1) + "/", page)
+    page = re.sub(r'<form class="form" onsubmit="return false">.*?</form>',
+                  f"<!--SC:{WP_CONTACT_FORM}-->", page, flags=re.S)
+    left = re.findall(r'(?:href|src)="(?!/|https?:|#|mailto:|tel:)[^"]+"', page)
+    if left:
+        raise SystemExit(f"{name}: relative URLs left after WordPress rewrite: {left[:5]}")
+    page = page.replace("</head>", "<!--WP_HEAD-->\n</head>", 1)
+    return page.replace("</body>", "<!--WP_FOOTER-->\n</body>", 1)
+
+
+def head_assets(t, name, title, desc, css_hash):
+    url = t.site.url(name)
+    return "\n".join([
+        f'<meta name="description" content="{desc}">',
+        *(['<meta name="robots" content="noindex">'] if t.preview else [f'<link rel="canonical" href="{url}">']),
+        '<meta name="theme-color" content="#F8F5F9">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:locale" content="de_DE">',
+        f'<meta property="og:title" content="{title}">',
+        f'<meta property="og:description" content="{desc}">',
+        '<meta property="og:site_name" content="Viktoria Langjahr">',
+        f'<meta property="og:image" content="{t.site.asset("assets/og.jpg")}">',
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        '<meta property="og:image:alt" content="Viktoria Langjahr – Psychoemotionale Praxis in Olpe">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        '<!--JSONLD-->',
+        f'<meta property="og:url" content="{url}">',
+        *base_assets(css_hash),
+    ])
+
+
+def base_assets(css_hash):
+    return [
+        '<link rel="icon" href="assets/favicon.png" type="image/png">',
+        '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">',
+        '<link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>',
+        '<link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>',
+        f'<link rel="stylesheet" href="assets/site.css?v={css_hash}">',
+    ]
+
+
+def build_target(t):
     shell = (SRC / "shell.html").read_text()
 
     # ---- shared stylesheet ----
@@ -155,13 +269,13 @@ def build():
     css = minify_css(css)
     css_hash = hashlib.md5(css.encode()).hexdigest()[:8]
 
-    out_assets = OUT / "assets"
+    out_assets = t.out / "assets"
     if out_assets.exists():
         shutil.rmtree(out_assets)
-    out_assets.mkdir()
+    out_assets.mkdir(parents=True)
     (out_assets / "site.css").write_text(css)
 
-    out_fonts = OUT / "fonts"
+    out_fonts = t.out / "fonts"
     if out_fonts.exists():
         shutil.rmtree(out_fonts)
     out_fonts.mkdir()
@@ -175,10 +289,11 @@ def build():
     head, rest = shell.split('<main id="top">', 1)
     _, foot = rest.split("</main>", 1)
 
-    site = seo.Site(SITE_URL)
-    (OUT / "llms.txt").write_text(site.llms_txt())
+    (t.out / "llms.txt").write_text(t.site.llms_txt())
+    t.pages_out.mkdir(parents=True, exist_ok=True)
 
-    for frag in sorted((SRC / "pages").glob("*.html")):
+    frags = [f for d in t.page_dirs for f in sorted(d.glob("*.html"))]
+    for frag in frags:
         name = frag.name
         body = frag.read_text()
         tm = re.match(r"<!--TITLE:(.*?)-->\s*", body, re.S)
@@ -186,59 +301,62 @@ def build():
         title = html.escape(seo.TITLES[name])
         desc = html.escape(seo.DESCRIPTIONS[name])
 
-        head_assets = "\n".join([
-            f'<meta name="description" content="{desc}">',
-            *(['<meta name="robots" content="noindex">'] if seo.PREVIEW else
-              [f'<link rel="canonical" href="{site.url(name)}">']),
-            '<meta name="theme-color" content="#F8F5F9">',
-            '<meta property="og:type" content="website">',
-            '<meta property="og:locale" content="de_DE">',
-            f'<meta property="og:title" content="{title}">',
-            f'<meta property="og:description" content="{desc}">',
-            '<meta property="og:site_name" content="Viktoria Langjahr">',
-            f'<meta property="og:image" content="{SITE_URL}assets/og.jpg">',
-            '<meta property="og:image:width" content="1200">',
-            '<meta property="og:image:height" content="630">',
-            '<meta property="og:image:alt" content="Viktoria Langjahr – Psychoemotionale Praxis in Olpe">',
-            '<meta name="twitter:card" content="summary_large_image">',
-            '<!--JSONLD-->',
-            f'<meta property="og:url" content="{SITE_URL}{"" if name == "index.html" else name}">',
-            '<link rel="icon" href="assets/favicon.png" type="image/png">',
-            '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">',
-            '<link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>',
-            '<link rel="preload" href="fonts/DMSans-latin.woff2" as="font" type="font/woff2" crossorigin>',
-            f'<link rel="stylesheet" href="assets/site.css?v={css_hash}">',
-        ])
-
         h = head if name == "index.html" else head.replace('href="#top"', 'href="index.html"')
-        h = h.replace("<!--HEAD-ASSETS-->", head_assets)
+        h = h.replace("<!--HEAD-ASSETS-->", head_assets(t, name, title, desc, css_hash))
         page = h + '<main id="top">\n' + body.strip() + "\n</main>" + foot
         page = re.sub(r"<title>.*?</title>", f"<title>{title}</title>", page, count=1)
         if name in ACTIVE:
             tgt = ACTIVE[name]
             page = page.replace(f'<a href="{tgt}">', f'<a class="active" href="{tgt}">', 1)
 
-        def resolve(mm):
-            key = mm.group(1)
-            src = next((SRC / "assets").glob(f"img_{key}.*"), None)
-            if src is None:
-                raise SystemExit(f"{name}: no asset for __IMG_{key}__")
-            return f"assets/{src.name}"
-
-        page = re.sub(r"__IMG_([A-Za-z0-9-]+)__", resolve, page)
-        page = (page.replace("__GREV_URL__", GREV_URL).replace("__GREV_N__", str(GREV_N))
-                .replace("__GREV_MORE__", str(GREV_N - GREV_SHOWN)))
-        left = re.findall(r"__[A-Z][A-Z_0-9]*__", page)
-        if left:
-            raise SystemExit(f"{name}: unresolved placeholders {left}")
+        page = resolve_placeholders(page, name)
         page = rewrite_imgs(page, info)
-        page = page.replace("<!--JSONLD-->", site.graph(name, page), 1)
-        (OUT / name).write_text(page)
+        page = page.replace("<!--JSONLD-->", t.site.graph(name, page), 1)
+        if t.wp:
+            page = wp_rewrite(page, name)
+        (t.pages_out / name).write_text(page)
         print(f"{name:28} {len(page) // 1024:>4} KB")
+
+    if t.wp:
+        # shell for blog posts and other WordPress pages: WordPress/Yoast print title and meta
+        g = head.replace('href="#top"', 'href="index.html"')
+        g = g.replace("<!--HEAD-ASSETS-->", "\n".join(['<meta name="theme-color" content="#F8F5F9">', *base_assets(css_hash)]))
+        g = re.sub(r"<title>.*?</title>\n?", "", g, count=1)
+        g = g + '<main id="top">\n<!--CONTENT-->\n</main>' + foot
+        g = rewrite_imgs(resolve_placeholders(g, "generic"), info)
+        (t.out / "parts").mkdir(exist_ok=True)
+        (t.out / "parts" / "generic.html").write_text(wp_rewrite(g, "generic"))
 
     total = sum(f.stat().st_size for f in out_assets.iterdir())
     print(f"assets/ {total // 1024} KB  (site.css {len(css) // 1024} KB, v={css_hash})")
+    return css_hash
+
+
+def build():
+    build_target(Target(out=OUT, pages_out=OUT, site=seo.Site(SITE_URL), preview=seo.PREVIEW))
+
+
+def build_wp():
+    theme = WP_DIST / WP_THEME
+    if theme.exists():
+        shutil.rmtree(theme)
+    shutil.copytree(SRC / "wp" / "theme", theme)
+    site = seo.Site(WP_URL, paths=WP_PATHS, asset_base=WP_URL.rstrip("/") + WP_ASSETS)
+    css_hash = build_target(Target(out=theme, pages_out=theme / "pages", site=site, preview=False, wp=True,
+                                   page_dirs=[SRC / "pages", SRC / "wp" / "pages"]))
+    style = theme / "style.css"
+    style.write_text(style.read_text().replace("__VERSION__", f"1.0.{css_hash}"))
+    shot = Image.open(theme / "assets" / "og.jpg").convert("RGB")
+    canvas = Image.new("RGB", (1200, 900), (248, 245, 249))
+    canvas.paste(shot, (0, 135))
+    canvas.save(theme / "screenshot.png")
+    zpath = WP_DIST / f"{WP_THEME}.zip"
+    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
+        for f in sorted(theme.rglob("*")):
+            if f.is_file():
+                z.write(f, f"{WP_THEME}/{f.relative_to(theme)}")
+    print(f"theme: {theme}\nzip:   {zpath} ({zpath.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":
-    build()
+    build_wp() if sys.argv[1:] == ["wp"] else build()

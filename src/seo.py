@@ -38,6 +38,10 @@ TITLES = {
     "sos-elternkurs.html": "SOS-Elternkurs online: Kind bei Ängsten begleiten",
     "akademie.html": "Akademie für psycho-emotionale Lösungen – Zertifikatskurs",
     "kontakt.html": "Kontakt & Erstgespräch – Viktoria Langjahr, Olpe",
+    # WordPress-only pages
+    "onlinereservierung.html": "Termin buchen – Viktoria Langjahr, Olpe",
+    "impressum.html": "Impressum – Viktoria Langjahr",
+    "datenschutzerklarung.html": "Datenschutzerklärung – Viktoria Langjahr",
 }
 
 DESCRIPTIONS = {
@@ -52,6 +56,9 @@ DESCRIPTIONS = {
     "sos-elternkurs.html": "Online-Kurs für Eltern: In 4 Wochen lernst du, dein Kind bei Ängsten und starken Emotionen zu verstehen und sicher zu begleiten. Ab 299 €.",
     "akademie.html": "4-monatiger Online-Zertifikatskurs in psycho-emotionaler, lösungsorientierter Kurzzeitbegleitung für Coaches, Berater, Pädagogen und Psychologen.",
     "kontakt.html": "Erstgespräch vereinbaren: unverbindlich, ca. 15 Minuten, telefonisch oder online. Am schnellsten per WhatsApp – oder per E-Mail.",
+    "onlinereservierung.html": "Termin online buchen: Sitzung mit 90 Minuten, vor Ort in der Praxis in Olpe oder online. Freien Tag und Uhrzeit direkt im Kalender wählen.",
+    "impressum.html": "Impressum der Psychoemotionalen Praxis Viktoria Langjahr, Rhoder Weg 4, 57462 Olpe.",
+    "datenschutzerklarung.html": "Datenschutzerklärung von viktoria-langjahr.de: welche personenbezogenen Daten verarbeitet werden und welche Rechte du hast.",
 }
 
 # breadcrumb names (Startseite is always first)
@@ -64,6 +71,9 @@ CRUMBS = {
     "kurse.html": [("kurse.html", "Kurse & Programme")],
     "ueber-mich.html": [("ueber-mich.html", "Über mich")],
     "kontakt.html": [("kontakt.html", "Kontakt")],
+    "onlinereservierung.html": [("onlinereservierung.html", "Termin buchen")],
+    "impressum.html": [("impressum.html", "Impressum")],
+    "datenschutzerklarung.html": [("datenschutzerklarung.html", "Datenschutzerklärung")],
     "sos-elternkurs.html": [("kurse.html", "Kurse & Programme"), ("sos-elternkurs.html", "SOS-Elternkurs")],
     "akademie.html": [("kurse.html", "Kurse & Programme"), ("akademie.html", "Akademie")],
 }
@@ -103,15 +113,24 @@ def _session_offer(price, audience):
 
 
 class Site:
-    def __init__(self, base):
+    def __init__(self, base, paths=None, asset_base=None):
+        """paths maps page names to URL paths below base (WordPress build);
+        without it the page file names are used (preview)."""
         self.base = base
+        self.paths = paths
+        self.asset_base = asset_base or base
         self.biz = base + "#business"
         self.person = base + "#viktoria"
         self.website = base + "#website"
         self.videos = json.loads((SRC / "videos.json").read_text())
 
     def url(self, name):
+        if self.paths is not None:
+            return self.base + self.paths[name]
         return self.base if name == "index.html" else self.base + name
+
+    def asset(self, path):
+        return self.asset_base + path
 
     # ---- shared entities -------------------------------------------------
     def business(self):
@@ -122,8 +141,8 @@ class Site:
             "alternateName": ["Viktoria Langjahr Coaching", "Viktoria Langjahr"],
             "description": DESCRIPTIONS["index.html"],
             "url": WEBSITE,
-            "image": self.base + "assets/og.jpg",
-            "logo": self.base + "assets/img_bf41d504-280.webp",
+            "image": self.asset("assets/og.jpg"),
+            "logo": self.asset("assets/img_bf41d504-280.webp"),
             "telephone": PHONE,
             "email": EMAIL,
             "address": {
@@ -172,7 +191,7 @@ class Site:
             "jobTitle": "Coach für psychoemotionale Begleitung",
             "description": "Psychoemotionale Begleitung für Kinder, Jugendliche, Eltern, Paare und Erwachsene. "
                            "Studium der Sozialen Arbeit & Sozialpädagogik, eigene Praxis seit 2018, Akademie seit 2024.",
-            "image": self.base + "assets/og.jpg",
+            "image": self.asset("assets/og.jpg"),
             "url": self.url("ueber-mich.html"),
             "knowsLanguage": ["de", "ru"],
             "worksFor": {"@id": self.biz},
@@ -214,7 +233,7 @@ class Site:
             label = html.unescape(label).replace("Video abspielen: ", "")
             label = re.sub(r"\s*\(\d+:\d\d\)$", "", label)
             img = re.search(r'src="([^"]+)"', inner)
-            thumbs = ([self.base + img.group(1)] if img else []) + [f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"]
+            thumbs = ([self.asset(img.group(1))] if img else []) + [f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"]
             out.append({
                 "@type": "VideoObject",
                 "@id": f"{self.url(name)}#video-{vid}",
@@ -384,4 +403,5 @@ class Site:
 - [Akademie]({p("akademie.html")}): 4-monatiger Online-Zertifikatskurs für Fachpersonen; Starttermin und Preis auf Anfrage
 - [Über mich]({p("ueber-mich.html")}): Werdegang von Viktoria Langjahr
 - [Kontakt]({p("kontakt.html")}): Erstgespräch vereinbaren, Termin buchen
-"""
+""" + (f"""- [Termin buchen]({p("onlinereservierung.html")}): freien Termin direkt im Online-Kalender wählen
+""" if self.paths and "onlinereservierung.html" in self.paths else "")

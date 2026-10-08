@@ -351,10 +351,10 @@
   .form-card{padding:26px 26px 28px;border-radius:24px}
   .form-card h2{font-size:1.5rem}
   .form{display:flex;flex-direction:column;gap:14px;margin-top:10px}
-  .form input,.form textarea{font:inherit;color:var(--ink);background:rgba(255,255,255,.78);
+  .form input:not([type=submit]):not([type=checkbox]),.form textarea{font:inherit;color:var(--ink);background:rgba(255,255,255,.78);
     border:1.5px solid rgba(255,255,255,.95);border-radius:14px;padding:.85em 1.1em;outline:none;
     box-shadow:var(--shadow-sm)}
-  .form input:focus,.form textarea:focus{border-color:var(--turq)}
+  .form input:not([type=submit]):not([type=checkbox]):focus,.form textarea:focus{border-color:var(--turq)}
   .form textarea{min-height:140px;resize:vertical}
   .form ::placeholder{color:#8aa0a5}
   .split-top{align-items:start}

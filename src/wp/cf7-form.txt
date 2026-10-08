@@ -1,0 +1,5 @@
+[text* your-name autocomplete:name placeholder "Dein Name"]
+[email* your-email autocomplete:email placeholder "Deine E-Mail-Adresse"]
+[textarea* your-message x5 placeholder "Deine Nachricht – worum geht es?"]
+[acceptance datenschutz] Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verwendet werden. Mehr dazu in der <a href="/datenschutzerklarung/">Datenschutzerklärung</a>. [/acceptance]
+<div class="btn-col">[submit class:btn class:btn-primary "Nachricht senden"]<span class="btn-note">Deine Daten werden vertraulich behandelt.</span></div>

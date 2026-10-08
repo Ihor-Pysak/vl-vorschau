@@ -232,6 +232,38 @@ add_filter(
 	2
 );
 
+/**
+ * Emails from the site are sent from info@viktoria-langjahr.de (own domain, against spam), but that
+ * mailbox is not read. Replies should reach Viktoria directly: add a Reply-To with her address unless
+ * the email already has one (the contact form sets the visitor) or is addressed to her own addresses.
+ */
+add_filter(
+	'wp_mail',
+	function ( $args ) {
+		$own = array( 'viktorialangjahr@gmx.de', 'v.langjahr@gmx.de', 'info@viktoria-langjahr.de' );
+		$to  = is_array( $args['to'] ) ? $args['to'] : explode( ',', (string) $args['to'] );
+		foreach ( $to as $addr ) {
+			$addr = strtolower( trim( preg_replace( '/^.*<([^>]+)>.*$/', '$1', (string) $addr ) ) );
+			if ( in_array( $addr, $own, true ) ) {
+				return $args;
+			}
+		}
+		$headers = isset( $args['headers'] ) ? $args['headers'] : '';
+		$all     = is_array( $headers ) ? implode( "\n", $headers ) : (string) $headers;
+		if ( false !== stripos( $all, 'reply-to:' ) ) {
+			return $args;
+		}
+		$line = 'Reply-To: Viktoria Langjahr <viktorialangjahr@gmx.de>';
+		if ( is_array( $headers ) ) {
+			$headers[] = $line;
+		} else {
+			$headers = '' === trim( $all ) ? $line : rtrim( $all ) . "\r\n" . $line;
+		}
+		$args['headers'] = $headers;
+		return $args;
+	}
+);
+
 // no share buttons from AddToAny in blog posts
 add_filter( 'addtoany_sharing_disabled', '__return_true' );
 

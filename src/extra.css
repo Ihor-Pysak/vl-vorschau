@@ -524,3 +524,27 @@ a.rating-badge{white-space:nowrap}
   .wpcf7 form .wpcf7-response-output{margin:4px 0 0;padding:12px 16px;border-radius:14px;font-size:.92rem;border:1.5px solid var(--turq);background:rgba(255,255,255,.7)}
   .wpcf7 form.invalid .wpcf7-response-output,.wpcf7 form.failed .wpcf7-response-output{border-color:#ED9FBF}
   .screen-reader-response{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  /* TheBooking calendar (booking page) in the site design */
+  .booking-cal .tbk-frontend{border:0!important;background:transparent!important;color:var(--ink)}
+  .booking-cal .tbk-frontend,.booking-cal .tbk-frontend :not(svg):not(path):not(.anticon){font-family:var(--font-body)!important}
+  .booking-cal .tbk-frontend .tbk-month,.booking-cal .tbk-frontend .tbk-month-name{font-family:var(--font-display)!important}
+  .booking-cal .tbk-row.tbk-weekdays{background:var(--wing-deep)!important;color:#fff!important;border-radius:12px}
+  .booking-cal .tbk-year{color:rgba(62,110,116,.4)!important}
+  .booking-cal .tbk-col.today,.booking-cal .tbk-col.today .day-button-container,.booking-cal .tbk-col.today .tbk-day-number{color:#3E6E74!important;font-weight:700}
+  .booking-cal .tbk-badge-count{background:#79BFC7!important;color:#fff!important;box-shadow:none!important}
+  .booking-cal .tbk-avatar{background:var(--wing-deep)!important}
+  .booking-cal .tbk-slot-selector{border:1.5px solid rgba(121,191,199,.45)!important;border-radius:14px!important;background:rgba(255,255,255,.8)!important;transition:border-color .15s ease,box-shadow .15s ease}
+  .booking-cal .tbk-slot-selector:hover{border-color:#79BFC7!important;box-shadow:var(--shadow-sm)}
+  .booking-cal .tbk-tag{background:rgba(121,191,199,.2)!important;border-color:transparent!important;color:#2F5F66!important;border-radius:999px!important;padding:1px 10px!important}
+  .booking-cal .tbk-frontend .anticon{color:#3E6E74!important}
+  .booking-cal .tbk-input{height:44px!important;border-radius:12px!important;border:1.5px solid rgba(121,191,199,.45)!important;padding:6px 14px!important;box-shadow:none!important;color:var(--ink)!important}
+  .booking-cal .tbk-input-disabled{background:rgba(255,255,255,.5)!important;color:var(--ink-soft)!important}
+  .booking-cal .tbk-select-single .tbk-select-selector{height:44px!important;border-radius:12px!important;border:1.5px solid rgba(121,191,199,.45)!important;padding:0 14px!important;box-shadow:none!important}
+  .booking-cal .tbk-select-single .tbk-select-selector .tbk-select-selection-item,.booking-cal .tbk-select-single .tbk-select-selector .tbk-select-selection-placeholder{line-height:41px!important}
+  .booking-cal .tbk-select-single .tbk-select-selector .tbk-select-selection-search-input{height:41px!important}
+  .booking-cal .tbk-input:focus,.booking-cal .tbk-select-focused .tbk-select-selector{border-color:#79BFC7!important}
+  .booking-cal .tbk-checkbox-checked .tbk-checkbox-inner{background:#3E6E74!important;border-color:#3E6E74!important}
+  .booking-cal .tbk-frontend a{color:#3E6E74!important;text-decoration:underline;text-underline-offset:3px}
+  .booking-cal .tbk-btn{height:auto!important;border-radius:999px!important;padding:.65em 1.4em!important;font-weight:600!important;box-shadow:none!important}
+  .booking-cal .tbk-btn-primary{background:var(--wing-deep)!important;border:0!important;color:#fff!important}
+  .booking-cal .tbk-btn-default{background:rgba(255,255,255,.85)!important;border:1.5px solid rgba(121,191,199,.45)!important;color:var(--ink)!important}

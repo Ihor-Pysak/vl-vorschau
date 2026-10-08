@@ -20,6 +20,7 @@ WordPress URLs in pages/, the generic shell for blog and other WordPress pages
 in parts/generic.html, plus assets/, fonts/, llms.txt and the PHP templates.
 It is built outside the repo because the repo is published on GitHub Pages.
 """
+import datetime
 import hashlib
 import html
 import pathlib
@@ -345,7 +346,8 @@ def build_wp():
     css_hash = build_target(Target(out=theme, pages_out=theme / "pages", site=site, preview=False, wp=True,
                                    page_dirs=[SRC / "pages", SRC / "wp" / "pages"]))
     style = theme / "style.css"
-    style.write_text(style.read_text().replace("__VERSION__", f"1.0.{css_hash}"))
+    # date-based version: WordPress compares versions numerically when a theme zip is uploaded again
+    style.write_text(style.read_text().replace("__VERSION__", datetime.datetime.now().strftime("1.%Y%m%d.%H%M")))
     shot = Image.open(theme / "assets" / "og.jpg").convert("RGB")
     canvas = Image.new("RGB", (1200, 900), (248, 245, 249))
     canvas.paste(shot, (0, 135))

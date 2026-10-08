@@ -21,11 +21,11 @@ $vl_html = preg_replace_callback(
 
 ob_start();
 wp_head();
-$vl_head = ob_get_clean();
+$vl_head = vl_clean( ob_get_clean() );
 
 ob_start();
 wp_footer();
-$vl_foot = ob_get_clean();
+$vl_foot = vl_clean( ob_get_clean() );
 
 echo str_replace( // phpcs:ignore WordPress.Security.EscapeOutput -- prebuilt markup
 	array( '<!--WP_HEAD-->', '<!--WP_FOOTER-->', '<body>' ),

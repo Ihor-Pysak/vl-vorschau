@@ -56,6 +56,7 @@ add_action(
 		remove_action( 'wp_head', 'rest_output_link_wp_head' );
 		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 		remove_action( 'wp_head', 'feed_links_extra', 3 );
+		remove_action( 'wp_head', 'wp_site_icon', 99 ); // the theme brings its own favicon
 	}
 );
 
@@ -140,7 +141,7 @@ function vl_trim_assets() {
 	}
 	$key     = vl_key();
 	$plugins = ( $key && isset( VL_PLUGIN_ASSETS[ $key ] ) ) ? VL_PLUGIN_ASSETS[ $key ] : array();
-	$keep    = array( 'admin-bar', 'dashicons' );
+	$keep    = is_admin_bar_showing() ? array( 'admin-bar', 'dashicons' ) : array();
 	foreach ( array( wp_styles(), wp_scripts() ) as $reg ) {
 		foreach ( (array) $reg->queue as $handle ) {
 			if ( in_array( $handle, $keep, true ) ) {
@@ -167,6 +168,41 @@ add_action( 'wp_print_footer_scripts', 'vl_trim_assets', 1 );
 add_filter( 'addtoany_sharing_disabled', '__return_true' );
 
 /**
+ * Removes what other plugins (mostly Elementor) print into wp_head()/wp_footer()
+ * although the page does not use them: generator tags, the Google Fonts
+ * preconnect (no connection to Google without consent), lazy-load helpers and
+ * old favicons from the media library.
+ *
+ * @param string $html Output of wp_head() or wp_footer().
+ * @return string
+ */
+function vl_clean( $html ) {
+	$out = preg_replace(
+		array(
+			'#<meta name=["\']generator["\'][^>]*>\s*#i',
+			'#<link[^>]+(?:fonts\.gstatic\.com|fonts\.googleapis\.com)[^>]*>\s*#i',
+			'#<link rel=["\'](?:icon|apple-touch-icon)["\'][^>]+/wp-content/uploads/[^>]*>\s*#i',
+			'#<meta name=["\']msapplication-TileImage["\'][^>]*>\s*#i',
+		),
+		'',
+		$html
+	);
+	if ( null === $out ) { // regex error: better unfiltered than empty
+		return $html;
+	}
+	// Elementor's lazy-load helpers: drop whole <script>/<style> blocks by their content
+	$out2 = preg_replace_callback(
+		'#<(script|style)\b[^>]*>.*?</\1>\s*#is',
+		function ( $m ) {
+			$drop = false !== strpos( $m[0], 'lazyloadRunObserver' ) || false !== strpos( $m[0], '.e-con.e-parent' );
+			return $drop ? '' : $m[0];
+		},
+		$out
+	);
+	return null === $out2 ? $out : $out2;
+}
+
+/**
  * Prints a WordPress page in the site layout (parts/generic.html).
  *
  * @param callable $content Prints the content of <main>.
@@ -177,14 +213,14 @@ function vl_generic( callable $content ) {
 
 	ob_start();
 	wp_head();
-	$head = ob_get_clean();
+	$head = vl_clean( ob_get_clean() );
 	echo str_replace( array( '<!--WP_HEAD-->', '<body>' ), array( $head, '<body' . vl_body_class_attr() . '>' ), $top ); // phpcs:ignore WordPress.Security.EscapeOutput
 
 	$content();
 
 	ob_start();
 	wp_footer();
-	$foot = ob_get_clean();
+	$foot = vl_clean( ob_get_clean() );
 	echo str_replace( '<!--WP_FOOTER-->', $foot, $bottom ); // phpcs:ignore WordPress.Security.EscapeOutput
 }
 

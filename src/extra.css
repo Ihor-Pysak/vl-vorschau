@@ -529,7 +529,7 @@ a.rating-badge{white-space:nowrap}
   .booking-cal .tbk-frontend,.booking-cal .tbk-frontend :not(svg):not(path):not(.anticon){font-family:var(--font-body)!important}
   .booking-cal .tbk-frontend .tbk-month,.booking-cal .tbk-frontend .tbk-month-name{font-family:var(--font-display)!important}
   .booking-cal .tbk-row.tbk-weekdays{background:var(--wing-deep)!important;color:#fff!important;border-radius:12px}
-  .booking-cal .tbk-year{color:rgba(62,110,116,.4)!important}
+  .booking-cal .tbk-year{color:var(--ink-soft)!important}
   .booking-cal .tbk-col.today,.booking-cal .tbk-col.today .day-button-container,.booking-cal .tbk-col.today .tbk-day-number{color:#3E6E74!important;font-weight:700}
   .booking-cal .tbk-badge-count{background:#79BFC7!important;color:#fff!important;box-shadow:none!important}
   .booking-cal .tbk-avatar{background:var(--wing-deep)!important}

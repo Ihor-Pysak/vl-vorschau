@@ -199,7 +199,7 @@ def build():
             f'<meta property="og:image" content="{SITE_URL}assets/og.jpg">',
             '<meta property="og:image:width" content="1200">',
             '<meta property="og:image:height" content="630">',
-            '<meta property="og:image:alt" content="Viktoria Langjahr – Psychoemotionale Begleitung">',
+            '<meta property="og:image:alt" content="Viktoria Langjahr – Psychoemotionale Praxis in Olpe">',
             '<meta name="twitter:card" content="summary_large_image">',
             '<!--JSONLD-->',
             f'<meta property="og:url" content="{SITE_URL}{"" if name == "index.html" else name}">',

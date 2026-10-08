@@ -27,7 +27,7 @@ EMAIL = "viktorialangjahr@gmx.de"
 WEBSITE = "https://viktoria-langjahr.de/"
 
 TITLES = {
-    "index.html": "Psychoemotionale Begleitung in Olpe – Viktoria Langjahr",
+    "index.html": "Psychoemotionale Praxis in Olpe – Viktoria Langjahr",
     "coaching-kinder.html": "Coaching für Kinder & Jugendliche in Olpe – Viktoria Langjahr",
     "coaching-eltern.html": "Coaching für Eltern in Olpe & online – Viktoria Langjahr",
     "coaching-paare.html": "Coaching für Paare in Olpe & online – Viktoria Langjahr",
@@ -118,7 +118,8 @@ class Site:
         return {
             "@type": "ProfessionalService",
             "@id": self.biz,
-            "name": "Viktoria Langjahr – Psychoemotionale Begleitung",
+            "name": "Psychoemotionale Praxis für Kinder & Erwachsene – Viktoria Langjahr",
+            "alternateName": ["Viktoria Langjahr Coaching", "Viktoria Langjahr"],
             "description": DESCRIPTIONS["index.html"],
             "url": WEBSITE,
             "image": self.base + "assets/og.jpg",
@@ -348,7 +349,7 @@ class Site:
     # ---- llms.txt ----------------------------------------------------------
     def llms_txt(self):
         p = self.url
-        return f"""# Viktoria Langjahr – Psychoemotionale Begleitung
+        return f"""# Psychoemotionale Praxis für Kinder & Erwachsene – Viktoria Langjahr
 
 > Psychoemotionale Begleitung (Coaching) für Kinder, Jugendliche, Eltern, Paare und Erwachsene bei Ängsten, Panik, innerer Unruhe, starken Emotionen, Schulproblemen und psychosomatischen Beschwerden. Praxis in Olpe (Rhoder Weg 4, 57462 Olpe, NRW) und online. Begleitung auf Deutsch und Russisch. 5,0 Sterne bei Google (88 Bewertungen, Stand Oktober 2026).
 

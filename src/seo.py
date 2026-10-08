@@ -361,7 +361,7 @@ class Site:
 - Krankenkasse: keine Kassenleistung, private Zahlung; dafür keine Wartezeit auf einen Therapieplatz und keine Diagnose an die Krankenkasse.
 - Erstgespräch: unverbindlich, ca. 15 Minuten, telefonisch oder online.
 - Online-Coaching für Kinder in der Regel ab etwa 7–8 Jahren.
-- Das Coaching ersetzt keine notwendige medizinische oder psychotherapeutische Behandlung.
+- Das Coaching ersetzt keine notwendige ärztliche, psychiatrische oder psychotherapeutische Behandlung.
 - Qualifikation: Studium der Sozialen Arbeit & Sozialpädagogik, eigene Praxis seit 2018, Akademie seit 2024.
 
 ## Kontakt

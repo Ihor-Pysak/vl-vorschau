@@ -469,3 +469,11 @@ a.rating-badge{white-space:nowrap}
 }
 /* first screen is visible immediately (no scroll reveal): faster first paint / LCP */
 .js main > section:first-child .rev-up{opacity:1;transform:none;transition:none}
+  /* inline text link + 3-column facts */
+  a.txt-link{font-weight:600;color:#3E6E74}
+  a.txt-link:hover{text-decoration:underline;text-underline-offset:3px}
+  a.txt-link .arw{display:inline-block;transition:transform .18s ease}
+  a.txt-link:hover .arw{transform:translateX(3px)}
+  .facts-3{grid-template-columns:repeat(3,1fr);margin-top:30px}
+  @media (max-width:520px){.facts-3{gap:8px}.facts-3 .fact{padding:14px 12px 12px}.facts-3 .fact .fn{font-size:1.35rem}.facts-3 .fact .fl{font-size:.8rem}}
+  @media (max-width:374px){.facts-3{grid-template-columns:1fr 1fr}.facts-3 .fact:last-child{grid-column:1/-1}}

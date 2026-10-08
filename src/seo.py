@@ -16,11 +16,11 @@ SRC = pathlib.Path(__file__).resolve().parent
 PREVIEW = True
 
 GOOGLE_MAPS = "https://www.google.com/maps?cid=14350894553348031286"
+# her YouTube channel is a mixed personal channel and is deliberately not linked
 SAME_AS = [
     GOOGLE_MAPS,
     "https://www.instagram.com/viktorialangjahr/",
     "https://www.facebook.com/viktorialangjahrcoaching/",
-    "https://www.youtube.com/@viktorialangjahr9644",
 ]
 PHONE = "+49 1577 4277896"
 EMAIL = "viktorialangjahr@gmx.de"

@@ -25,6 +25,9 @@ const VL_PAGES = array(
 	'datenschutzerklarung'                 => 'datenschutzerklarung',
 );
 
+// IndexNow key (Bing and others): served as /<key>.txt, used to announce updated URLs
+const VL_INDEXNOW_KEY = 'cbc496af89673c87a91a4c9feaac26b6';
+
 // pages of the old site that no longer exist
 const VL_REDIRECTS = array(
 	'coaching'      => '/',
@@ -98,6 +101,12 @@ add_action(
 			readfile( get_theme_file_path( 'llms.txt' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 			exit;
 		}
+		if ( VL_INDEXNOW_KEY . '.txt' === $path ) {
+			status_header( 200 );
+			header( 'Content-Type: text/plain; charset=utf-8' );
+			echo VL_INDEXNOW_KEY; // phpcs:ignore WordPress.Security.EscapeOutput
+			exit;
+		}
 		if ( isset( VL_REDIRECTS[ $path ] ) ) {
 			wp_safe_redirect( home_url( VL_REDIRECTS[ $path ] ), 301 );
 			exit;
@@ -163,6 +172,31 @@ function vl_trim_assets() {
 add_action( 'wp_enqueue_scripts', 'vl_trim_assets', PHP_INT_MAX );
 add_action( 'wp_print_styles', 'vl_trim_assets', PHP_INT_MAX );
 add_action( 'wp_print_footer_scripts', 'vl_trim_assets', 1 );
+
+// Yoast on the blog: title and description for the blog index, a description from the text for posts
+add_filter(
+	'wpseo_title',
+	function ( $title ) {
+		return is_home() ? 'Geschichten aus der Praxis – Viktoria Langjahr' : $title;
+	}
+);
+function vl_blog_description( $desc ) {
+	if ( is_home() ) {
+		return 'Geschichten aus der Praxis: kurze Fallgeschichten aus der psychoemotionalen Begleitung von Kindern, Eltern, Paaren und Erwachsenen in Olpe.';
+	}
+	if ( is_singular( 'post' ) && ! $desc ) {
+		return wp_trim_words( wp_strip_all_tags( get_post_field( 'post_content', get_queried_object_id() ) ), 24, ' …' );
+	}
+	return $desc;
+}
+add_filter( 'wpseo_metadesc', 'vl_blog_description' );
+add_filter( 'wpseo_opengraph_desc', 'vl_blog_description' );
+add_filter(
+	'wpseo_opengraph_title',
+	function ( $title ) {
+		return is_home() ? 'Geschichten aus der Praxis – Viktoria Langjahr' : $title;
+	}
+);
 
 // no share buttons from AddToAny in blog posts
 add_filter( 'addtoany_sharing_disabled', '__return_true' );

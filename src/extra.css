@@ -295,7 +295,7 @@
 
   /* google reviews carousel */
   .rv-wrap{margin-top:30px}
-  .rv-track{display:flex;align-items:flex-start;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
+  .rv-track{display:flex;align-items:flex-start;gap:18px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
     padding:6px 2px 20px;scrollbar-width:none}
   .rv-track::-webkit-scrollbar{display:none}
   .rv-track:focus-visible{outline:3px solid var(--turq);outline-offset:4px;border-radius:24px}

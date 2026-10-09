@@ -320,6 +320,173 @@ add_filter(
 	}
 );
 
+/**
+ * TheBooking ↔ Google Calendar: a booking whose event Viktoria deletes in her Google Calendar
+ * is cancelled on the site as well (frees the slot, sends the usual cancellation emails).
+ * TheBooking itself only syncs site → Google. Runs every 10 minutes via WP-Cron.
+ *
+ * Safety: only future confirmed/pending bookings; a booking counts as deleted only if Google
+ * answers 404/410 or status "cancelled" for that event while the calendar itself is readable;
+ * more than VL_GCAL_MAX_CANCEL deletions in one run are treated as an error and nothing is cancelled.
+ */
+const VL_GCAL_HOOK       = 'vl_gcal_sync_deleted';
+const VL_GCAL_MAX_CANCEL = 3;
+const VL_GCAL_ACTIVE     = true; // the cron job only runs when true; the admin check works either way
+
+add_filter(
+	'cron_schedules',
+	function ( $schedules ) {
+		$schedules['vl_10min'] = array(
+			'interval' => 600,
+			'display'  => 'Alle 10 Minuten',
+		);
+		return $schedules;
+	}
+);
+
+add_action(
+	'init',
+	function () {
+		$next = wp_next_scheduled( VL_GCAL_HOOK );
+		if ( VL_GCAL_ACTIVE && ! $next ) {
+			wp_schedule_event( time() + 120, 'vl_10min', VL_GCAL_HOOK );
+		} elseif ( ! VL_GCAL_ACTIVE && $next ) {
+			wp_clear_scheduled_hook( VL_GCAL_HOOK );
+		}
+	}
+);
+
+add_action(
+	'switch_theme',
+	function () {
+		wp_clear_scheduled_hook( VL_GCAL_HOOK );
+	}
+);
+
+add_action(
+	VL_GCAL_HOOK,
+	function () {
+		vl_gcal_sync_deleted( false );
+	}
+);
+
+/**
+ * @param bool $dry_run Only report, change nothing.
+ * @return array Report lines.
+ */
+function vl_gcal_sync_deleted( $dry_run ) {
+	$report = array();
+	$needed = array( '\VSHM\Providers\Reservations', '\VSHM\Providers\ServiceProviders', '\VSHM\Modules\Gcal2Ways', '\VSHM\Bus\CancelReservation', '\Google\Service\Calendar' );
+	foreach ( $needed as $class ) {
+		if ( ! class_exists( $class ) ) {
+			return array( 'missing class ' . $class );
+		}
+	}
+	if ( ! $dry_run && get_transient( 'vl_gcal_sync_lock' ) ) {
+		return array( 'locked' );
+	}
+	set_transient( 'vl_gcal_sync_lock', 1, 300 );
+
+	try {
+		$reservations = \VSHM\Providers\Reservations::provideByWithData( array(), false, time(), null, true );
+	} catch ( \Throwable $e ) {
+		delete_transient( 'vl_gcal_sync_lock' );
+		return array( 'reservations error: ' . $e->getMessage() );
+	}
+
+	$services = array(); // provider id => Calendar service or false
+	$readable = array(); // calendar id => bool
+	$gone     = array();
+	foreach ( (array) $reservations as $res ) {
+		$r      = json_decode( wp_json_encode( $res ), true );
+		$status = isset( $r['status'] ) ? $r['status'] : '';
+		$event  = isset( $r['data']['gcalEventId'] ) ? (string) $r['data']['gcalEventId'] : '';
+		$cal    = isset( $r['data']['gcalId'] ) ? (string) $r['data']['gcalId'] : '';
+		$pid    = isset( $r['providerId'] ) ? $r['providerId'] : null;
+		$label  = '#' . ( isset( $r['db_id'] ) ? $r['db_id'] : '?' ) . ' ' . gmdate( 'Y-m-d H:i', (int) ( isset( $r['start'] ) ? $r['start'] : 0 ) ) . ' UTC';
+		if ( ! in_array( $status, array( 'confirmed', 'pending' ), true ) || '' === $event || '' === $cal || null === $pid ) {
+			continue;
+		}
+		if ( ! isset( $services[ $pid ] ) ) {
+			$services[ $pid ] = false;
+			$provider         = \VSHM\Providers\ServiceProviders::provideBy( array( 'id' => $pid ), true );
+			$token            = is_array( $provider ) && isset( $provider['tbk_GoogleAccessToken'] ) ? $provider['tbk_GoogleAccessToken'] : null;
+			if ( $token ) {
+				$client = \VSHM\Modules\Gcal2Ways::_client();
+				$client->setAccessToken( $token );
+				$services[ $pid ] = new \Google\Service\Calendar( $client );
+			}
+		}
+		$svc = $services[ $pid ];
+		if ( ! $svc ) {
+			$report[] = $label . ': no Google token';
+			continue;
+		}
+		if ( ! isset( $readable[ $cal ] ) ) {
+			try {
+				$svc->events->listEvents( $cal, array( 'maxResults' => 1 ) );
+				$readable[ $cal ] = true;
+			} catch ( \Throwable $e ) {
+				$readable[ $cal ] = false;
+				$report[]         = 'calendar not readable (' . $e->getCode() . ')';
+			}
+		}
+		if ( ! $readable[ $cal ] ) {
+			continue;
+		}
+		try {
+			$ev      = $svc->events->get( $cal, $event );
+			$deleted = ( 'cancelled' === $ev->getStatus() );
+		} catch ( \Throwable $e ) {
+			$code = (int) $e->getCode();
+			if ( 404 !== $code && 410 !== $code ) {
+				$report[] = $label . ': Google error ' . $code;
+				continue;
+			}
+			$deleted = true;
+		}
+		$report[] = $label . ': ' . ( $deleted ? 'DELETED in Google' : 'ok' );
+		if ( $deleted ) {
+			$gone[] = $r['id'];
+		}
+	}
+
+	if ( ! $dry_run && $gone ) {
+		if ( count( $gone ) > VL_GCAL_MAX_CANCEL ) {
+			$report[] = 'too many deletions (' . count( $gone ) . '), nothing cancelled';
+		} else {
+			foreach ( $gone as $id ) {
+				try {
+					vshm()->bus->dispatch( new \VSHM\Bus\UpdateOrCreateReservationProperty( $id, 'cancellationReason', 'Im Google Kalender gelöscht' ) );
+					vshm()->bus->dispatch( new \VSHM\Bus\CancelReservation( $id ), vshm()->bus::AGENT_SYSTEM );
+					$report[] = 'cancelled ' . $id;
+				} catch ( \Throwable $e ) {
+					$report[] = 'cancel error ' . $id . ': ' . $e->getMessage();
+				}
+			}
+		}
+	}
+	if ( ! $dry_run ) {
+		update_option( 'vl_gcal_sync_last', array( 'time' => time(), 'dry' => false, 'report' => $report ), false );
+	}
+	delete_transient( 'vl_gcal_sync_lock' );
+	return $report;
+}
+
+// check for admins: /wp-admin/?vl_gcal_check=1 (read-only report)
+add_action(
+	'admin_init',
+	function () {
+		if ( isset( $_GET['vl_gcal_check'] ) && current_user_can( 'manage_options' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			header( 'Content-Type: text/plain; charset=utf-8' );
+			$last = get_option( 'vl_gcal_sync_last' );
+			echo "Dry run now:\n" . implode( "\n", vl_gcal_sync_deleted( true ) ) . "\n\nLast cron run: "; // phpcs:ignore WordPress.Security.EscapeOutput
+			echo $last ? gmdate( 'Y-m-d H:i', $last['time'] ) . ' UTC' . ( $last['dry'] ? ' (dry)' : '' ) . "\n" . implode( "\n", $last['report'] ) : 'never'; // phpcs:ignore WordPress.Security.EscapeOutput
+			exit;
+		}
+	}
+);
+
 // no share buttons from AddToAny in blog posts
 add_filter( 'addtoany_sharing_disabled', '__return_true' );
 
